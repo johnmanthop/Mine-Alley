@@ -9,17 +9,17 @@ Cinematic_Manager::Cinematic_Manager(Character &pl, Generic_Map &bck, Platform_M
 
 void Cinematic_Manager::reset()
 {
-    collision_engine.reset(platform_map);
+    physics_engine.reset(platform_map);
 }
 
 bool Cinematic_Manager::can_move_right() const
 {
-    return (background_map.can_roll_left() || player.can_move_right()) && collision_engine.can_move_right(player.get_absolute_x(), player.get_absolute_y());
+    return (background_map.can_roll_left() || player.can_move_right()) && physics_engine.can_move_right(player.get_absolute_x(), player.get_absolute_y());
 }
 
 bool Cinematic_Manager::can_move_left() const 
 {
-    return (background_map.can_roll_right() || player.can_move_left()) && collision_engine.can_move_left(player.get_absolute_x(), player.get_absolute_y());
+    return (background_map.can_roll_right() || player.can_move_left()) && physics_engine.can_move_left(player.get_absolute_x(), player.get_absolute_y());
 }
 
 void Cinematic_Manager::move_player_or_map_right()
@@ -112,10 +112,10 @@ void Cinematic_Manager::handle_input()
         player.animation_manager.deactivate_animation();
     }
 
-    if (Keyboard_IO::is_key_pressed(sf::Keyboard::Space) && !player.get_jumping_state())
+    if (Keyboard_IO::is_key_pressed(sf::Keyboard::Space) && !player.is_jumping())
     {
         player.trigger_jump();
     }
 
-    collision_engine.tick_gravity(player);
+    physics_engine.tick_gravity(player);
 }

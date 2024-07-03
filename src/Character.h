@@ -41,9 +41,11 @@ public:
     bool is_at_center() const { return relative_position == center_position; }
 
     void trigger_jump() { jump_counter = 0; }
+    void trigger_freefall() { jump_counter = JUMP_LIMIT; }
+    int get_jump_counter() const { return jump_counter; }
     int get_jumping_state() const;
-    double get_jumping_force() const;
-    double get_max_gravity_force() const;
+    void reset_jump()   { jump_counter = -1; }
+    bool is_jumping() const { return jump_counter != -1; }
     void tick_jump();
 
     bool is_in_proximity(int p) const;

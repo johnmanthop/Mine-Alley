@@ -5,7 +5,7 @@
 #include "Character.h"
 #include "Generic_Map.h"
 #include "Platform_Map.h"
-#include "Collision_Engine.h"
+#include "Physics_Engine.h"
 #include "Constants.h"
 
 class Cinematic_Manager
@@ -14,7 +14,7 @@ private:
     Character &player;
     Generic_Map &background_map;
     Platform_Map &platform_map;
-    Collision_Engine collision_engine;
+    Physics_Engine physics_engine;
 public:
     Cinematic_Manager(Character &pl, Generic_Map &bck, Platform_Map &plt);
     void reset();

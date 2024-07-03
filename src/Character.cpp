@@ -81,35 +81,15 @@ bool Character::can_move_right() const
 
 void Character::tick_jump()
 {
-    if (jump_counter != -1 && jump_counter < 60)
+    if (jump_counter != -1)
     {
         jump_counter++;
-    }
-    else
-    {
-        jump_counter = -1;
     }
 }
 
 int Character::get_jumping_state() const 
 {
-    if (jump_counter == -1) return 0;
-    else if (jump_counter < 30) return 1;
-    else if (jump_counter < 60) return 2;
-    else return 3; /* error state */
-}
-
-double Character::get_jumping_force() const 
-{
-    if (jump_counter == -1 || jump_counter >= 60) return 0;
-
-    std::map<int, double>::const_iterator p = jumping_force_map.find(jump_counter / 5);
-    if (p == jumping_force_map.end()) return 0; /* error */
-
-    else return p->second;
-}
-
-double Character::get_max_gravity_force() const 
-{
-    return (--jumping_force_map.end())->second;
+    if (jump_counter == -1) return 0;       // not jumping
+    else if (jump_counter < JUMP_LIMIT) return 1;   // upward movement
+    else return 2;                          // downward movement
 }
