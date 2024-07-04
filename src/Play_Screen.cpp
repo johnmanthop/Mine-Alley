@@ -60,44 +60,7 @@ void Play_Screen::handle_drawing(Renderer &renderer)
     
     renderer.draw(player.get_sprite());
 
-    if (player_won)
-    {
-        sf::Font font;
-        font.loadFromFile("assets/other/font1.ttf");
-        sf::Text reset_text("You made it, Now you can try again next day\n\nYou probably won't make it...", font);
-        reset_text.setPosition(main_view.getCenter().x - 50, main_view.getCenter().y - 15);
-        reset_text.setCharacterSize(15);
-        reset_text.setScale(0.25, 0.25);
-        reset_text.setFillColor(sf::Color::Black);
 
-        renderer.draw(reset_text);
-    }
-
-    if (player_dying)
-    {
-        explosion_animation_manager.tick_active_animation();
-        renderer.draw(explosion_animation_manager.get_sprite());
-
-        if (explosion_animation_manager.has_active_animation_yielded())
-        {
-            player_dying = false;
-            player_dead = true;
-        }
-    }
-    else if (player_dead)
-    {
-        sf::Font font;
-        font.loadFromFile("assets/other/font1.ttf");
-        sf::Text reset_text("You didn't make it...\nPress E to try again", font);
-        reset_text.setPosition(main_view.getCenter().x - 25, main_view.getCenter().y - 15);
-        reset_text.setCharacterSize(15);
-        reset_text.setScale(0.25, 0.25);
-        reset_text.setFillColor(sf::Color::Black);
-
-        renderer.draw(reset_text);
-        
-        if (Keyboard_IO::is_key_pressed(sf::Keyboard::E)) reset(configuration);
-    }
 
     
     if (trigger_on)
@@ -175,8 +138,8 @@ void Play_Screen::handle_active_tiles()
     if (tile_under_player == TILE::MINE_BLOCK)
     {
         player_dying = true;
-        explosion_animation_manager.add_animation("explosion", "assets/other/explosion.png", 8, 5, main_view.getCenter().x - 25, player.get_absolute_y());
-        explosion_animation_manager.set_active_animation("explosion");
+        //explosion_animation_manager.add_animation("explosion", "assets/other/explosion.png", 8, 5, main_view.getCenter().x - 25, player.get_absolute_y());
+        //explosion_animation_manager.set_active_animation("explosion");
     }
     else if (tile_under_player == TILE::FINISH_BLOCK)
     {

@@ -59,7 +59,7 @@ public:
 
     bool has_yielded() const 
     {
-        return global_animation_tick_counter == (no_of_frames * animation_speed);
+        return global_animation_tick_counter >= (no_of_frames * animation_speed);
     }
 };
 

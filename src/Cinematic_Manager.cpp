@@ -65,57 +65,36 @@ TILE Cinematic_Manager::get_tile_under_player() const
 
 void Cinematic_Manager::handle_input()
 {
-    if (player.animation_manager.is_animating()) player.animation_manager.tick_active_animation();
+    std::string input = "NOP";
+
     if (Keyboard_IO::is_key_pressed(sf::Keyboard::D))
     {
         if (can_move_right())
         {
             move_player_or_map_right();
+            input = "D";
+        }
 
-            if (!player.animation_manager.is_animating() ||
-                player.animation_manager.get_active_animation() != "walking_right")
-            {
-                player.animation_manager.set_active_animation("walking_right");
-            }
-            else 
-            {
-                player.animation_manager.tick_active_animation();
-            }
-        }
-        else 
-        {
-            player.animation_manager.deactivate_animation();
-        }
     }
     else if (Keyboard_IO::is_key_pressed(sf::Keyboard::A))
     {
         if (can_move_left())
         {
             move_player_or_map_left();
-            if (!player.animation_manager.is_animating() ||
-                player.animation_manager.get_active_animation() != "walking_left")
-            {
-                player.animation_manager.set_active_animation("walking_left");
-            }
-            else 
-            {
-                player.animation_manager.tick_active_animation();
-            }
+
+            input = "A";
         }
-        else 
-        {
-            player.animation_manager.deactivate_animation();
-        }
-    }
-    else 
-    {
-        player.animation_manager.deactivate_animation();
     }
 
     if (Keyboard_IO::is_key_pressed(sf::Keyboard::Space) && !player.is_jumping())
     {
         player.trigger_jump();
     }
+    else if (Keyboard_IO::is_key_pressed_once(sf::Keyboard::F))
+    {
+        input = "F";
+    }
 
+    player.animation_manager.tick(input);
     physics_engine.tick_gravity(player);
 }

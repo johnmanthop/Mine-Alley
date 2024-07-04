@@ -1,8 +1,8 @@
 #include <cmath>
 #include "Character.h"
+#include "FSM.h"
 
 Character::Character():
-    character_static("assets/characters/player_static.png"),
     y_position(PLAYER_POS_Y),
     jump_counter(-1),
     universal_position(0),
@@ -26,30 +26,28 @@ void Character::reset()
     universal_position = 0;
     relative_position = 100;
 
-    character_static.get_sprite().setPosition({ PLAYER_POS_X, PLAYER_POS_Y });
+    FSM fsm;
+    fsm.construct_default_character_table();
+
+    animation_manager.add_animation("idle_right", "assets/characters/player_static_right.png", 1, 1, 100, 128);
+    animation_manager.add_animation("idle_left", "assets/characters/player_static_left.png", 1, 1, 100, 128);
+    animation_manager.add_animation("walking_right", "assets/characters/player_walking_right.png", 4, 8, 100, 128);
+    animation_manager.add_animation("walking_left", "assets/characters/player_walking_left.png", 4, 8, 100, 128);
+    animation_manager.add_animation("attacking_right", "assets/characters/player_attack_right.png", 3, 2, 100, 128);
+    animation_manager.add_animation("attacking_left", "assets/characters/player_attack_left.png", 3, 2, 100, 128);
     
-    animation_manager.add_animation("walking_right", "assets/characters/player_walking_right.png", 4, 17, 100, 128);
-    animation_manager.add_animation("walking_left", "assets/characters/player_walking_left.png", 4, 17, 100, 128);
-    animation_manager.set_active_animation("walking_right");
+    animation_manager.set_animation_fsm(fsm);
 }
 
 sf::Sprite& Character::get_sprite()
 {
-    if (animation_manager.is_animating())
-    {
-        return animation_manager.get_sprite();
-    }
-    else 
-    {
-        return character_static.get_sprite();
-    }
+    return animation_manager.get_sprite();
 }
 
 void Character::universal_move(float x, float y)
 {
     y_position += y;
     animation_manager.move_all_sprites(x, y);
-    character_static.get_sprite().move({ x, y });
 }
 
 void Character::move_left()
@@ -89,7 +87,8 @@ void Character::tick_jump()
 
 int Character::get_jumping_state() const 
 {
-    if (jump_counter == -1) return 0;       // not jumping
-    else if (jump_counter < JUMP_LIMIT) return 1;   // upward movement
-    else return 2;                          // downward movement
+    // not jumping, upward movement, downward movement
+    if (jump_counter == -1) return 0;       
+    else if (jump_counter < JUMP_LIMIT) return 1;
+    else return 2;
 }

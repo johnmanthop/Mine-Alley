@@ -17,7 +17,6 @@ private:
     double universal_position;
     double relative_position;
     const double center_position;
-    Drawable_Static character_static;
     std::map<int, double> jumping_force_map;
 public:
     Character();

@@ -7,20 +7,19 @@ void Animation_Manager::add_animation(const std::string &tag, const std::string 
     animations[tag].reset(file, no_of_frames_, animation_speed_, x, y);
 }
 
-void Animation_Manager::set_active_animation(const std::string &tag)
+void Animation_Manager::tick(const std::string &input)
 {
-   current_animation_tag = tag;
-   is_animating_b = true;
-}
+    if (animation_fsm.timed() && animations[current_animation_tag].has_yielded())
+    {
+        animation_fsm.advance("end");
+    }
+    else
+    {
+        animation_fsm.advance(input);
+    }
 
-void Animation_Manager::deactivate_animation()
-{
-   is_animating_b = false;
-   animations[current_animation_tag].reset_sprite();
-}
+    current_animation_tag = animation_fsm.state();
 
-void Animation_Manager::tick_active_animation()
-{
     animations[current_animation_tag].tick();
 }
 
