@@ -38,7 +38,6 @@ private:
     void handle_input();
     void handle_triggers();
     void handle_action(const std::string &action);
-    void handle_active_tiles();
     void reset(const Screen_Configuration &config);
 public:
     Play_Screen(const Screen_Configuration &config);

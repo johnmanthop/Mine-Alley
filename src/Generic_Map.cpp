@@ -23,7 +23,7 @@ void Generic_Map::roll_left()
     relative_position -= ROLL_STEP;
     
     double factor = 1.f;
-    for (int i = get_layers() - 1; i >= 0; --i)
+    for (int i = drawable_layers.size() - 1; i >= 1; --i)
     {
         drawable_layers[i].get_sprite().move({ -ROLL_STEP * factor, 0 });
         factor -= 0.2f;
@@ -35,7 +35,7 @@ void Generic_Map::roll_right()
     relative_position += ROLL_STEP;
     
     double factor = 1.f;
-    for (int i = get_layers() - 1; i >= 0; --i)
+    for (int i = drawable_layers.size() - 1; i >= 1; --i)
     {
         drawable_layers[i].get_sprite().move({ ROLL_STEP * factor, 0 });
         factor -= 0.2f;

@@ -29,13 +29,17 @@ void Character::reset()
     FSM fsm;
     fsm.construct_default_character_table();
 
-    animation_manager.add_animation("idle_right", "assets/characters/player_static_right.png", 1, 1, 100, 128);
-    animation_manager.add_animation("idle_left", "assets/characters/player_static_left.png", 1, 1, 100, 128);
-    animation_manager.add_animation("walking_right", "assets/characters/player_walking_right.png", 4, 8, 100, 128);
-    animation_manager.add_animation("walking_left", "assets/characters/player_walking_left.png", 4, 8, 100, 128);
-    animation_manager.add_animation("attacking_right", "assets/characters/player_attack_right.png", 3, 2, 100, 128);
-    animation_manager.add_animation("attacking_left", "assets/characters/player_attack_left.png", 3, 2, 100, 128);
+    animation_manager.add_animation("idle_right", "assets/Character/Idle/Idle-Sheet.png", 4, 10, PLAYER_POS_X, PLAYER_POS_Y);
+    animation_manager.add_animation("idle_left", "assets/Character/Idle/Idle-Sheet.png", 4, 10, PLAYER_POS_X, PLAYER_POS_Y);
+    animation_manager.add_animation("walking_right", "assets/Character/Run/Run-Sheet.png", 8, 8, PLAYER_POS_X, PLAYER_POS_Y);
+    animation_manager.add_animation("walking_left", "assets/Character/Run/Run-Sheet.png", 8, 8, PLAYER_POS_X, 95);
+    animation_manager.add_animation("attacking_right", "assets/Character/Attack-01/Attack-01-Sheet.png", 8, 2, PLAYER_POS_X, PLAYER_POS_Y);
+    animation_manager.add_animation("attacking_left", "assets/Character/Attack-01/Attack-01-Sheet.png", 8, 2, PLAYER_POS_X, PLAYER_POS_Y);
     
+    animation_manager.animation_mirror("idle_left", true);
+    animation_manager.animation_mirror("walking_left", true);
+    animation_manager.animation_mirror("attacking_left", true);
+
     animation_manager.set_animation_fsm(fsm);
 }
 

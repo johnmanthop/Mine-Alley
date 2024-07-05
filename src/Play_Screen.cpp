@@ -16,11 +16,6 @@ Play_Screen::Play_Screen(const Screen_Configuration &config):
 
 void Play_Screen::reset(const Screen_Configuration &config)
 {
-    player_dying    = false;
-    player_dead     = false;
-    trigger_on      = false;
-    player_won      = false;
-
     player.reset();
     cinematic_manager.reset();
 
@@ -45,7 +40,7 @@ void Play_Screen::handle_drawing(Renderer &renderer)
 
     renderer.set_view(main_view);
 
-    for (int i = 0; i < background_map.get_layers(); ++i)
+    for (int i = 0; i < background_map.get_layer_no(); ++i)
     {
         renderer.draw(background_map.get_sprite(i));
     }
@@ -59,20 +54,6 @@ void Play_Screen::handle_drawing(Renderer &renderer)
     }
     
     renderer.draw(player.get_sprite());
-
-
-
-    
-    if (trigger_on)
-    {
-        renderer.draw(interaction_board.get_sprite());
-
-        Text text(active_trigger.explanation_text);
-        text.get_text().setPosition(48, 151);
-        text.get_text().setScale(0.15, 0.15);
-        
-        renderer.draw(text.get_text());
-    }
     
     renderer.display();
 }
@@ -132,28 +113,12 @@ void Play_Screen::handle_triggers()
     }
 }
 
-void Play_Screen::handle_active_tiles()
-{
-    auto tile_under_player = cinematic_manager.get_tile_under_player();
-    if (tile_under_player == TILE::MINE_BLOCK)
-    {
-        player_dying = true;
-        //explosion_animation_manager.add_animation("explosion", "assets/other/explosion.png", 8, 5, main_view.getCenter().x - 25, player.get_absolute_y());
-        //explosion_animation_manager.set_active_animation("explosion");
-    }
-    else if (tile_under_player == TILE::FINISH_BLOCK)
-    {
-        player_won = true;
-    }
-}
-
 void Play_Screen::handle_frame(Renderer &renderer)
 {
     if (!player_dying && !player_dead && !player_won)
     {
         handle_input();
         handle_triggers();
-        handle_active_tiles(); //tiles that can perform an action (ie kill the player) are named active
     }
     
 

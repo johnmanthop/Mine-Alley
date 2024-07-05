@@ -47,20 +47,20 @@ private:
     int rect_left_top;
     int local_frame_tick_counter;
     int global_animation_tick_counter;
+    bool mirror;
 public:
-    Drawable_Animation() {}
+    Drawable_Animation() { mirror = false; }
     Drawable_Animation(const std::string &file, int no_of_frames_, int animation_speed_, int x = 0, int y = 0);
 
+    void set_mirror(bool m) { mirror = m; }
+    bool get_mirror() const { return mirror; }
     void reset(const std::string &file, int no_of_frames_, int animation_speed_, int x = 0, int y = 0);
     void reset_sprite();
     void tick();
 
-    sf::Sprite& get_sprite() override { return current_sprite; }
+    sf::Sprite& get_sprite() override;
 
-    bool has_yielded() const 
-    {
-        return global_animation_tick_counter >= (no_of_frames * animation_speed);
-    }
+    bool has_yielded() const;
 };
 
 #endif 

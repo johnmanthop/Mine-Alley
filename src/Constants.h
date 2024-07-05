@@ -1,16 +1,16 @@
 #ifndef CONSTANTS
 #define CONSTANTS
 
-#define MAIN_VIEW_WIDTH 240
-#define MAIN_VIEW_HEIGHT 170
+#define MAIN_VIEW_WIDTH 480
+#define MAIN_VIEW_HEIGHT 272
 
 #define EXP_VIEW_WIDTH 68
 #define EXP_VIEW_HEIGHT 52
 
-#define ROLL_STEP 0.75
+#define ROLL_STEP 2
 
 #define PLAYER_POS_X 100
-#define PLAYER_POS_Y 128
+#define PLAYER_POS_Y 95
 
 #define TILE_WIDTH 16
 #define TILE_HEIGHT 16

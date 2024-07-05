@@ -37,27 +37,12 @@ void Platform_Map::reset(const std::string &level_descriptor)
             if (current_input == '0')
             {
                 type_descriptor[h][w] = TILE::VOID;
-                sprite_descriptor[h][w].reset( "assets/tiles/block0.png", w * 16, h * 16 );
-            }
-            else if (current_input == '1')
-            {
-                type_descriptor[h][w] = TILE::CONCRETE_BLOCK;
-                sprite_descriptor[h][w].reset( "assets/tiles/block1.png", w * 16, h * 16 );
-            }
-            else if (current_input == '2')
-            {
-                type_descriptor[h][w] = TILE::MINE_BLOCK;
-                sprite_descriptor[h][w].reset( "assets/tiles/block2.png", w * 16, h * 16 );
+                sprite_descriptor[h][w].reset( "assets/Misc/transp_block.png", w * 16, h * 16 );
             }
             else if (current_input == '3')
             {
                 type_descriptor[h][w] = TILE::CONCRETE_BLOCK;
-                sprite_descriptor[h][w].reset( "assets/tiles/block0.png", w * 16, h * 16 );
-            }
-            else if (current_input == '4')
-            {
-                type_descriptor[h][w] = TILE::FINISH_BLOCK;
-                sprite_descriptor[h][w].reset( "assets/tiles/block0.png", w * 16, h * 16 );
+                sprite_descriptor[h][w].reset( "assets/Misc/transp_block.png", w * 16, h * 16 );
             }
             else 
             {

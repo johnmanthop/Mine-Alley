@@ -23,6 +23,23 @@ Drawable_Animation::Drawable_Animation(const std::string &file, int no_of_frames
     reset(file, no_of_frames_, animation_speed_, x, y);
 }
 
+sf::Sprite& Drawable_Animation::get_sprite() 
+{
+    if (mirror)
+    {
+        current_sprite.setOrigin( 
+            current_sprite.getTextureRect().width, 0
+        );
+        current_sprite.setScale(-1.f, 1.f);
+        
+        return current_sprite;
+    }
+    else
+    {
+        return current_sprite;
+    }
+}
+
 void Drawable_Animation::reset(const std::string &file, int no_of_frames_, int animation_speed_, int x, int y)
 {
     if (!spritesheet.loadFromFile(file))
@@ -76,4 +93,9 @@ void Drawable_Animation::tick()
     {
         local_frame_tick_counter++;
     }
+}
+
+bool Drawable_Animation::has_yielded() const
+{
+    return global_animation_tick_counter >= (no_of_frames * animation_speed);
 }

@@ -67,7 +67,15 @@ void Cinematic_Manager::handle_input()
 {
     std::string input = "NOP";
 
-    if (Keyboard_IO::is_key_pressed(sf::Keyboard::D))
+    if (Keyboard_IO::is_key_pressed_once(sf::Keyboard::Space))
+    {
+        input = "attack";
+    }
+    else if (
+        Keyboard_IO::is_key_pressed(sf::Keyboard::D) &&
+        player.animation_manager.get_active_animation() != "attacking_left" &&
+        player.animation_manager.get_active_animation() != "attacking_right"
+    )
     {
         if (can_move_right())
         {
@@ -76,7 +84,11 @@ void Cinematic_Manager::handle_input()
         }
 
     }
-    else if (Keyboard_IO::is_key_pressed(sf::Keyboard::A))
+    else if (
+        Keyboard_IO::is_key_pressed(sf::Keyboard::A) &&
+        player.animation_manager.get_active_animation() != "attacking_left" && 
+        player.animation_manager.get_active_animation() != "attacking_right"
+    )
     {
         if (can_move_left())
         {
@@ -86,13 +98,10 @@ void Cinematic_Manager::handle_input()
         }
     }
 
-    if (Keyboard_IO::is_key_pressed(sf::Keyboard::Space) && !player.is_jumping())
+
+    if (Keyboard_IO::is_key_pressed(sf::Keyboard::W) && !player.is_jumping())
     {
         player.trigger_jump();
-    }
-    else if (Keyboard_IO::is_key_pressed_once(sf::Keyboard::F))
-    {
-        input = "F";
     }
 
     player.animation_manager.tick(input);

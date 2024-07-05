@@ -25,7 +25,7 @@ public:
     sf::Sprite& get_sprite(int layer_index) { return drawable_layers[layer_index].get_sprite(); }
     bool can_roll_left() const;
     bool can_roll_right() const;
-    int get_layers() const { return drawable_layers.size(); }
+    int get_layer_no() const { return drawable_layers.size(); }
 };
 
 #endif

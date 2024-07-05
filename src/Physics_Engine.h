@@ -22,7 +22,7 @@ public:
     bool can_move_left (double x, double y) const;
     bool can_move_down (double x, double y) const;
 
-    // player force, and terminate jump signal
+    // player force, and terminate jump signal are returned
     std::pair<double, bool> calculate_force(const Character &ch) const;
 
     void tick_gravity(Character &ch);
