@@ -7,6 +7,11 @@ Drawable_Static::Drawable_Static(const std::string &file, int x, int y)
     reset(file, x, y);
 }
 
+Drawable_Static::Drawable_Static(const sf::Texture &tex, const sf::IntRect &rect, int x, int y)
+{
+    reset(tex, rect, x, y);
+}
+
 void Drawable_Static::reset(const std::string &file, int x, int y)
 {
     if (!texture.loadFromFile(file))
@@ -15,6 +20,15 @@ void Drawable_Static::reset(const std::string &file, int x, int y)
     }
     
     sprite.setTexture(texture);
+    sprite.setPosition(x, y);
+}
+
+void Drawable_Static::reset(const sf::Texture &tex, const sf::IntRect &rect, int x, int y)
+{
+    // TODO: this needs to be revisited
+    texture = tex;
+    sprite.setTexture(texture);
+    sprite.setTextureRect(rect);
     sprite.setPosition(x, y);
 }
 
@@ -27,9 +41,7 @@ sf::Sprite& Drawable_Animation::get_sprite()
 {
     if (mirror)
     {
-        current_sprite.setOrigin( 
-            current_sprite.getTextureRect().width, 0
-        );
+        current_sprite.setOrigin(current_sprite.getTextureRect().width, 0);
         current_sprite.setScale(-1.f, 1.f);
         
         return current_sprite;

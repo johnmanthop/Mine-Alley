@@ -11,16 +11,17 @@
 
 class Platform_Map
 {
-private:
+public:
+    sf::Texture tilemap;
     int width, height;
     std::vector<std::vector<TILE>> type_descriptor;
     std::vector<std::vector<Drawable_Static>> sprite_descriptor;
     double relative_position;
 public:
-    Platform_Map() {}
-    Platform_Map(const std::string &level_descriptor);
+    Platform_Map() {  }
+    Platform_Map(const std::string &level_descriptor, const std::string &tilemap);
 
-    void reset(const std::string &level_descriptor);
+    void reset(const std::string &level_descriptor, const std::string &tilemap);
 
     int get_width()  const { return width; }
     int get_height() const { return height; }

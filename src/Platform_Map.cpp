@@ -1,12 +1,18 @@
 #include "Platform_Map.h"
 
-Platform_Map::Platform_Map(const std::string &level_descriptor)
+Platform_Map::Platform_Map(const std::string &level_descriptor, const std::string &tilemap)
 {
-    reset(level_descriptor);
+    reset(level_descriptor, tilemap);
 }
 
-void Platform_Map::reset(const std::string &level_descriptor)
+void Platform_Map::reset(const std::string &level_descriptor, const std::string &tilemap_s)
 {
+    if (!tilemap.loadFromFile(tilemap_s))
+    {
+        std::cout << "Error loading tilemap\n";
+        return;
+    }
+
     std::ifstream file(level_descriptor);
 
     if (!file.is_open())
@@ -37,12 +43,22 @@ void Platform_Map::reset(const std::string &level_descriptor)
             if (current_input == '0')
             {
                 type_descriptor[h][w] = TILE::VOID;
-                sprite_descriptor[h][w].reset( "assets/Misc/transp_block.png", w * 16, h * 16 );
+                sprite_descriptor[h][w].reset( "assets/Misc/transp_block.png", w * 32, h * 32 );
+            }
+            else if (current_input == '1')
+            {
+                type_descriptor[h][w] = TILE::CONCRETE_BLOCK;
+                sprite_descriptor[h][w].reset( tilemap, { { 64, 160 }, { 32, 32 } }, w * 32, h * 32);
+            }
+            else if (current_input == '2')
+            {
+                type_descriptor[h][w] = TILE::CONCRETE_BLOCK;
+                sprite_descriptor[h][w].reset( tilemap, { { 13, 10 }, { 32, 32 } }, w * 32, h * 32 );
             }
             else if (current_input == '3')
             {
                 type_descriptor[h][w] = TILE::CONCRETE_BLOCK;
-                sprite_descriptor[h][w].reset( "assets/Misc/transp_block.png", w * 16, h * 16 );
+                sprite_descriptor[h][w].reset( "assets/Misc/transp_block.png", w * 32, h * 32 );
             }
             else 
             {

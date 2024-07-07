@@ -29,13 +29,13 @@ void FSM::construct_default_character_table()
     table["walking_left"]["A"]   = "walking_left";
     table["walking_left"]["attack"]   = "attacking_left";
 
-    table["attacking_left"]["end"] = "idle_left";
+    table["attacking_left"]["end"] = "walking_left";
     table["attacking_left"]["NOP"] = "attacking_left";
     table["attacking_left"]["D"]   = "attacking_left";
     table["attacking_left"]["A"]   = "attacking_left";
     table["attacking_left"]["attack"]   = "attacking_left";
 
-    table["attacking_right"]["end"] = "idle_right";
+    table["attacking_right"]["end"] = "walking_right";
     table["attacking_right"]["NOP"] = "attacking_right";
     table["attacking_right"]["D"]   = "attacking_right";
     table["attacking_right"]["A"]   = "attacking_right";

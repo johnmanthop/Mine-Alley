@@ -25,7 +25,7 @@ void Play_Screen::reset(const Screen_Configuration &config)
     interaction_board.get_sprite().setPosition({ 45, 150 });
 
     background_map.reset(config.layer_files);
-    platform_map.reset(config.level_descriptor_file);
+    platform_map.reset(config.level_descriptor_file, "assets/Misc/Tiles.png");
 
     name_tag        = config.name_tag;
     next_screen_s   = name_tag;

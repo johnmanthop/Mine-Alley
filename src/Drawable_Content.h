@@ -20,17 +20,22 @@ private:
 public:
     Drawable_Static() {}
     Drawable_Static(const std::string &file, int x = 0, int y = 0);
+    Drawable_Static(const sf::Texture &tex, const sf::IntRect &rect, int x = 0, int y = 0);
     Drawable_Static(const Drawable_Static &s)
     {
         texture = s.texture;
+        sprite = s.copy_sprite();
         sprite.setTexture(texture);
-        sprite.setPosition(s.get_sprite_x(), s.get_sprite_y());
     }
 
+    void reset(const sf::Texture &t, const sf::IntRect &rect, int x = 0, int y = 0);
     void reset(const std::string &file, int x = 0, int y = 0);
-    sf::Vector2u get_texture_size() const { return texture.getSize(); }
-    sf::Vector2f get_sprite_position() const { return sprite.getPosition(); }
-    sf::Sprite& get_sprite() override { return sprite; }
+
+    sf::Vector2u get_texture_size()     const { return texture.getSize(); }
+    sf::Vector2f get_sprite_position()  const { return sprite.getPosition(); }
+    sf::Sprite&  get_sprite()        override { return sprite; }
+    sf::Sprite   copy_sprite()          const { return sprite; }
+
     float get_sprite_x() const { return sprite.getPosition().x; }
     float get_sprite_y() const { return sprite.getPosition().y; }
 };

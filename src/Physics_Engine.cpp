@@ -14,35 +14,42 @@ void Physics_Engine::reset(const Platform_Map &plt)
 
 bool Physics_Engine::can_move_left(double x, double y) const
 {
-    int normalized_x = ((x + (TILE_WIDTH / 2)) / TILE_WIDTH) + PLAYER_TILE_OFFSET - 1;
+    int normalized_x = ((x + PLAYER_X_OFFSET_LEFT) / TILE_SIZE) + PLAYER_TILE_OFFSET_LEFT;
     if (normalized_x < 0) normalized_x = 0;
 
-    int normalized_y_top    = (y / TILE_HEIGHT) + 1;
-    int normalized_y_bottom = ((y + TILE_HEIGHT - 1) / TILE_HEIGHT) + 1;
+    int normalized_y_top    = (y / TILE_SIZE) + 1;
+    int normalized_y_bottom = ((y + TILE_SIZE - 1) / TILE_SIZE) + 1;
 
-    return ((tile_type_descriptor[normalized_y_top][normalized_x] == TILE::VOID || tile_type_descriptor[normalized_y_bottom][normalized_x] == TILE::FINISH_BLOCK) && 
-           (tile_type_descriptor[normalized_y_bottom][normalized_x] == TILE::VOID || tile_type_descriptor[normalized_y_bottom][normalized_x] == TILE::FINISH_BLOCK));
+    return (tile_type_descriptor[normalized_y_top][normalized_x] != TILE::CONCRETE_BLOCK && 
+           tile_type_descriptor[normalized_y_bottom][normalized_x] != TILE::CONCRETE_BLOCK);
 }
 
 bool Physics_Engine::can_move_right(double x, double y) const
 {
-    int normalized_x = (x / TILE_WIDTH) + PLAYER_TILE_OFFSET;
+    int normalized_x = ((x + PLAYER_X_OFFSET_RIGHT) / TILE_SIZE) + PLAYER_TILE_OFFSET_RIGHT;
     if (normalized_x < 0) normalized_x = 0;
 
-    int normalized_y_top    = (y / TILE_HEIGHT) + 1;
-    int normalized_y_bottom = ((y + TILE_HEIGHT - 1) / TILE_HEIGHT) + 1;
 
-    return ((tile_type_descriptor[normalized_y_top][normalized_x] == TILE::VOID || tile_type_descriptor[normalized_y_bottom][normalized_x] == TILE::FINISH_BLOCK) && 
-           (tile_type_descriptor[normalized_y_bottom][normalized_x] == TILE::VOID || tile_type_descriptor[normalized_y_bottom][normalized_x] == TILE::FINISH_BLOCK));}
+
+    int normalized_y_top    = (y / TILE_SIZE) + 1;
+    int normalized_y_bottom = ((y + TILE_SIZE - 1) / TILE_SIZE) + 1;
+
+    return (tile_type_descriptor[normalized_y_top][normalized_x] != TILE::CONCRETE_BLOCK && 
+           tile_type_descriptor[normalized_y_bottom][normalized_x] != TILE::CONCRETE_BLOCK);
+}
 
 bool Physics_Engine::can_move_down(double x, double y) const
 {
-    int normalized_x = ((x - 4) / TILE_WIDTH) + PLAYER_TILE_OFFSET;
-    if (normalized_x < 0) normalized_x = 0;
+    int normalized_x_l = ((x + PLAYER_X_OFFSET_MIDDLE - 16) / TILE_SIZE) + PLAYER_TILE_OFFSET_MIDDLE;
+    if (normalized_x_l < 0) normalized_x_l = 0;
 
-    int normalized_y = (y / TILE_HEIGHT) + 2;
+    int normalized_x_r = ((x + PLAYER_X_OFFSET_MIDDLE) / TILE_SIZE) + PLAYER_TILE_OFFSET_MIDDLE;
+    if (normalized_x_r < 0) normalized_x_r = 0;
 
-    return tile_type_descriptor[normalized_y][normalized_x] == TILE::VOID;
+    int normalized_y = (y / TILE_SIZE) + 2;
+
+    return (tile_type_descriptor[normalized_y][normalized_x_l] != TILE::CONCRETE_BLOCK &&
+            tile_type_descriptor[normalized_y][normalized_x_r] != TILE::CONCRETE_BLOCK);
 }
 
 std::pair<double, bool> Physics_Engine::calculate_force(const Character &ch) const

@@ -55,10 +55,10 @@ TILE Cinematic_Manager::get_tile_under_player() const
     double x = player.get_absolute_x();
     double y = player.get_absolute_y();
 
-    int normalized_x = ((x - 4) / TILE_WIDTH) + PLAYER_TILE_OFFSET;
+    int normalized_x = ((x + PLAYER_X_OFFSET_MIDDLE) / TILE_SIZE) + PLAYER_TILE_OFFSET_MIDDLE;
     if (normalized_x < 0) normalized_x = 0;
 
-    int normalized_y = (y / TILE_HEIGHT) + 2;
+    int normalized_y = (y / TILE_SIZE) + 2;
 
     return platform_map.get_tile(normalized_x, normalized_y);
 }
