@@ -44,7 +44,7 @@ void Generic_Map::roll_right()
 
 bool Generic_Map::can_roll_left() const
 {
-    return abs(relative_position) + MAIN_VIEW_WIDTH < get_right_border();
+    return abs(relative_position) + MAIN_VIEW_WIDTH < 800;
 }
 
 bool Generic_Map::can_roll_right() const

@@ -63,7 +63,7 @@ std::pair<double, bool> Physics_Engine::calculate_force(const Character &ch) con
     }
     else if (ch.get_jumping_state() == 2 && can_move_down_b)
     {
-        return { 1, false };
+        return { 1.5, false };
     }
     else
     {

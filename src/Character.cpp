@@ -6,8 +6,8 @@ Character::Character():
     y_position(PLAYER_POS_Y),
     jump_counter(-1),
     universal_position(0),
-    relative_position(100),
-    center_position(100)
+    relative_position(200),
+    center_position(200)
 {
     reset();
 

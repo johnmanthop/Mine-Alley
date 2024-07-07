@@ -25,6 +25,7 @@ bool Cinematic_Manager::can_move_left() const
 void Cinematic_Manager::move_player_or_map_right()
 {
     player.inc_uposition();
+
     if (background_map.can_roll_left() && player.is_at_center())
     {
         background_map.roll_left();

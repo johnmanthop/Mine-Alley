@@ -32,12 +32,13 @@ public:
     // move both static and animation sprites
     void universal_move(float x, float y);
 
+    double get_relative_x() const { return relative_position; }
     double get_absolute_x() const { return universal_position; }
     double get_absolute_y() const { return y_position; }
 
     bool can_move_left() const;
     bool can_move_right() const;
-    bool is_at_center() const { return relative_position == center_position; }
+    bool is_at_center() const { return abs(relative_position - center_position) <= 2; }
 
     void trigger_jump() { jump_counter = 0; }
     void trigger_freefall() { jump_counter = JUMP_LIMIT; }
