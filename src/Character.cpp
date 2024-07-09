@@ -2,45 +2,20 @@
 #include "Character.h"
 #include "FSM.h"
 
-Character::Character():
-    y_position(PLAYER_POS_Y),
-    jump_counter(-1),
-    universal_position(0),
-    relative_position(200),
-    center_position(200)
+Character::Character(int y):
+    center_position(MAIN_VIEW_WIDTH / 2 + 60)
 {
-    reset();
-
-    double f = 1.2;
-
-    for (int i = 0; i < 12; ++i)
-    {
-        jumping_force_map[i] = (-1 + 0.2*i) * f;
-    }
+    reset(y);
 }
 
-void Character::reset()
+void Character::reset(int y)
 {
-    y_position = PLAYER_POS_Y;
+    y_position = y;
     jump_counter = -1;
     universal_position = 0;
-    relative_position = 100;
+    relative_position  = 200;
 
-    FSM fsm;
-    fsm.construct_default_character_table();
-
-    animation_manager.add_animation("idle_right", "assets/Character/Idle/Idle-Sheet.png", 4, 10, PLAYER_POS_X, PLAYER_POS_Y);
-    animation_manager.add_animation("idle_left", "assets/Character/Idle/Idle-Sheet.png", 4, 10, PLAYER_POS_X, PLAYER_POS_Y);
-    animation_manager.add_animation("walking_right", "assets/Character/Run/Run-Sheet.png", 8, 8, PLAYER_POS_X, PLAYER_POS_Y);
-    animation_manager.add_animation("walking_left", "assets/Character/Run/Run-Sheet.png", 8, 8, PLAYER_POS_X, 95);
-    animation_manager.add_animation("attacking_right", "assets/Character/Attack-01/Attack-01-Sheet.png", 8, 2, PLAYER_POS_X, PLAYER_POS_Y);
-    animation_manager.add_animation("attacking_left", "assets/Character/Attack-01/Attack-01-Sheet.png", 8, 2, PLAYER_POS_X, PLAYER_POS_Y);
-    
-    animation_manager.animation_mirror("idle_left", true);
-    animation_manager.animation_mirror("walking_left", true);
-    animation_manager.animation_mirror("attacking_left", true);
-
-    animation_manager.set_animation_fsm(fsm);
+    animation_manager.clear();
 }
 
 sf::Sprite& Character::get_sprite()

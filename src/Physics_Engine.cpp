@@ -38,7 +38,7 @@ bool Physics_Engine::can_move_right(double x, double y) const
            tile_type_descriptor[normalized_y_bottom][normalized_x] != TILE::CONCRETE_BLOCK);
 }
 
-bool Physics_Engine::can_move_down(double x, double y) const
+bool Physics_Engine::can_move_down(double x, double y, int obj_height, int height_finetune) const
 {
     int normalized_x_l = ((x + PLAYER_X_OFFSET_MIDDLE - 16) / TILE_SIZE) + PLAYER_TILE_OFFSET_MIDDLE;
     if (normalized_x_l < 0) normalized_x_l = 0;
@@ -46,7 +46,7 @@ bool Physics_Engine::can_move_down(double x, double y) const
     int normalized_x_r = ((x + PLAYER_X_OFFSET_MIDDLE) / TILE_SIZE) + PLAYER_TILE_OFFSET_MIDDLE;
     if (normalized_x_r < 0) normalized_x_r = 0;
 
-    int normalized_y = (y / TILE_SIZE) + 2;
+    int normalized_y = ((y + height_finetune) / TILE_SIZE) + obj_height;
 
     return (tile_type_descriptor[normalized_y][normalized_x_l] != TILE::CONCRETE_BLOCK &&
             tile_type_descriptor[normalized_y][normalized_x_r] != TILE::CONCRETE_BLOCK);
@@ -54,7 +54,7 @@ bool Physics_Engine::can_move_down(double x, double y) const
 
 std::pair<double, bool> Physics_Engine::calculate_force(const Character &ch) const
 {
-    bool can_move_down_b = can_move_down(ch.get_absolute_x(), ch.get_absolute_y());
+    bool can_move_down_b = can_move_down(ch.get_absolute_x(), ch.get_absolute_y(), ch.get_height(), ch.get_height_finetune());
 
     // first two branches can be merged but there is a small bug
     if (ch.get_jumping_state() == 1)
@@ -73,7 +73,7 @@ std::pair<double, bool> Physics_Engine::calculate_force(const Character &ch) con
 
 void Physics_Engine::tick_gravity(Character &ch)
 {
-    if (!ch.is_jumping() && can_move_down(ch.get_absolute_x(), ch.get_absolute_y()))
+    if (!ch.is_jumping() && can_move_down(ch.get_absolute_x(), ch.get_absolute_y(), ch.get_height(), ch.get_height_finetune()))
     {
         ch.trigger_freefall();
     }

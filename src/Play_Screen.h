@@ -28,14 +28,15 @@ private:
     Screen_Configuration configuration;
 private:
     Drawable_Static interaction_board;
-    Animation_Manager explosion_animation_manager;
     Platform_Map platform_map;
     Generic_Map background_map;
-    Character player;
     Cinematic_Manager cinematic_manager;
+    Character player;
+    std::vector<Character> enemies;
 private:
     void handle_drawing(Renderer &renderer);
     void handle_input();
+    void handle_enemies();
     void handle_triggers();
     void handle_action(const std::string &action);
     void reset(const Screen_Configuration &config);

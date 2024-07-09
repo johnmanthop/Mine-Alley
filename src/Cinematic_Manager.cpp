@@ -1,7 +1,8 @@
 #include "Cinematic_Manager.h"
 
-Cinematic_Manager::Cinematic_Manager(Character &pl, Generic_Map &bck, Platform_Map &plt):
+Cinematic_Manager::Cinematic_Manager(Character &pl, std::vector<Character> &en, Generic_Map &bck, Platform_Map &plt):
     player(pl),
+    enemies(en),
     background_map(bck),
     platform_map(plt)
 {    
@@ -9,6 +10,7 @@ Cinematic_Manager::Cinematic_Manager(Character &pl, Generic_Map &bck, Platform_M
 
 void Cinematic_Manager::reset()
 {
+    enemy_cycle = 0;
     physics_engine.reset(platform_map);
 }
 
@@ -30,6 +32,10 @@ void Cinematic_Manager::move_player_or_map_right()
     {
         background_map.roll_left();
         platform_map.roll_left();
+        for (auto &en: enemies)
+        {
+            en.move_left();
+        }
     }
     else if (player.can_move_right()) 
     {
@@ -44,10 +50,57 @@ void Cinematic_Manager::move_player_or_map_left()
     {
         background_map.roll_right();
         platform_map.roll_right();
+        for (auto &en: enemies)
+        {
+            en.move_right();
+        }
     }
     else if (player.can_move_left()) 
     {
         player.move_left();
+    }
+}
+
+void Cinematic_Manager::move_enemies_left()
+{
+    for (auto &en: enemies)
+    {
+        en.move_left();
+    }
+}
+
+void Cinematic_Manager::move_enemies_right()
+{
+    for (auto &en: enemies)
+    {
+        en.move_right();
+    }
+}
+
+void Cinematic_Manager::handle_enemies()
+{
+    std::string input = "NOP";
+
+    if (enemy_cycle < ENEMY_CYCLE_LIMIT / 2)
+    {
+        input = "right";
+        move_enemies_right();
+        enemy_cycle++;
+    }
+    else if (enemy_cycle < ENEMY_CYCLE_LIMIT)
+    {
+        input = "left";
+        move_enemies_left();
+        enemy_cycle++;
+    }
+    else 
+    {
+        enemy_cycle = 0;
+    }
+
+    for (auto &en: enemies)
+    {
+        en.animation_manager.tick(input);
     }
 }
 
@@ -94,7 +147,6 @@ void Cinematic_Manager::handle_input()
         if (can_move_left())
         {
             move_player_or_map_left();
-
             input = "A";
         }
     }
@@ -106,5 +158,14 @@ void Cinematic_Manager::handle_input()
     }
 
     player.animation_manager.tick(input);
+}
+
+void Cinematic_Manager::tick_gravity()
+{
+    for (auto &en: enemies)
+    {
+        physics_engine.tick_gravity(en);
+    }
+
     physics_engine.tick_gravity(player);
 }

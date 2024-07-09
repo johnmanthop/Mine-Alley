@@ -8,7 +8,8 @@
 
 Play_Screen::Play_Screen(const Screen_Configuration &config):
     interaction_board("assets/other/board.png"),
-    cinematic_manager(player, background_map, platform_map)
+    cinematic_manager(player, enemies, background_map, platform_map),
+    player(PLAYER_POS_Y)
 {
     configuration = config;
     reset(configuration);
@@ -16,8 +17,44 @@ Play_Screen::Play_Screen(const Screen_Configuration &config):
 
 void Play_Screen::reset(const Screen_Configuration &config)
 {
-    player.reset();
-    cinematic_manager.reset();
+    enemies.clear();
+    
+    for (int i = 0; i < 1; ++i)
+    {
+        enemies.emplace_back(ENEMY_POS_Y);
+        enemies[i].set_height(1);
+        enemies[i].set_height_finetune(0);
+
+        enemies[i].animation_manager.add_animation("idle_left", "assets/Mob/Boar/Idle/Idle-Sheet.png", 4, 10, ENEMY_POS_X, ENEMY_POS_Y);
+        enemies[i].animation_manager.add_animation("walking_left", "assets/Mob/Boar/Walk/Walk-Base-Sheet.png", 6, 10, ENEMY_POS_X, ENEMY_POS_Y);
+        enemies[i].animation_manager.add_animation("walking_right", "assets/Mob/Boar/Walk/Walk-Base-Sheet.png", 6, 10, ENEMY_POS_X, ENEMY_POS_Y);
+        
+        enemies[i].animation_manager.animation_mirror("walking_right", true);
+
+        FSM fsm_en;
+        fsm_en.construct_default_enemy1_table();
+        enemies[i].animation_manager.set_animation_fsm(fsm_en);
+    }
+
+    player.reset(PLAYER_POS_Y);
+    player.set_height(2);
+    player.set_height_finetune(0);
+
+    player.animation_manager.add_animation("idle_right", "assets/Character/Idle/Idle-Sheet.png", 4, 10, PLAYER_POS_X, PLAYER_POS_Y);
+    player.animation_manager.add_animation("idle_left", "assets/Character/Idle/Idle-Sheet.png", 4, 10, PLAYER_POS_X, PLAYER_POS_Y);
+    player.animation_manager.add_animation("walking_right", "assets/Character/Run/Run-Sheet.png", 8, 8, PLAYER_POS_X, PLAYER_POS_Y);
+    player.animation_manager.add_animation("walking_left", "assets/Character/Run/Run-Sheet.png", 8, 8, PLAYER_POS_X, 95);
+    player.animation_manager.add_animation("attacking_right", "assets/Character/Attack-01/Attack-01-Sheet.png", 8, 2, PLAYER_POS_X, PLAYER_POS_Y);
+    player.animation_manager.add_animation("attacking_left", "assets/Character/Attack-01/Attack-01-Sheet.png", 8, 2, PLAYER_POS_X, PLAYER_POS_Y);
+    
+    player.animation_manager.animation_mirror("idle_left", true);
+    player.animation_manager.animation_mirror("walking_left", true);
+    player.animation_manager.animation_mirror("attacking_left", true);
+
+    FSM fsm;
+    fsm.construct_default_character_table();
+
+    player.animation_manager.set_animation_fsm(fsm);
 
     main_view.reset({ 0, 0, MAIN_VIEW_WIDTH, MAIN_VIEW_HEIGHT });
 
@@ -53,11 +90,20 @@ void Play_Screen::handle_drawing(Renderer &renderer)
         }
     }
     
+    for (auto &en: enemies)
+    {
+        renderer.draw(en.get_sprite());
+    }
+
     renderer.draw(player.get_sprite());
     
     renderer.display();
 }
 
+void Play_Screen::handle_enemies()
+{
+    cinematic_manager.handle_enemies();
+}
 
 void Play_Screen::handle_input()
 {
@@ -118,7 +164,9 @@ void Play_Screen::handle_frame(Renderer &renderer)
     if (!player_dying && !player_dead && !player_won)
     {
         handle_input();
+        handle_enemies();
         handle_triggers();
+        cinematic_manager.tick_gravity();
     }
     
 

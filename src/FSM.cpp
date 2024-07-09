@@ -41,3 +41,20 @@ void FSM::construct_default_character_table()
     table["attacking_right"]["A"]   = "attacking_right";
     table["attacking_right"]["attack"]   = "attacking_right";
 }
+
+void FSM::construct_default_enemy1_table()
+{
+    current_state = "idle_left";
+
+    table["idle_left"]["NOP"] = "idle_left";
+    table["idle_left"]["left"] = "walking_left";
+    table["idle_left"]["right"] = "walking_right";
+
+    table["walking_left"]["NOP"] = "idle_left";
+    table["walking_left"]["left"] = "walking_left";
+    table["walking_left"]["right"] = "walking_right";
+
+    table["walking_right"]["NOP"] = "idle_left";
+    table["walking_right"]["left"] = "walking_left";
+    table["walking_right"]["right"] = "walking_right";
+}

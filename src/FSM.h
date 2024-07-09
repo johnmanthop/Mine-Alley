@@ -19,6 +19,7 @@ public:
     void advance(const std::string &action) { current_state = table[current_state][action]; }
     bool timed() const;
     void construct_default_character_table();
+    void construct_default_enemy1_table();
 };
 
 #endif

@@ -12,6 +12,8 @@
 class Character
 {
 private:
+    int height;
+    int height_finetune;
     double y_position;
     int jump_counter;
     double universal_position;
@@ -19,8 +21,8 @@ private:
     const double center_position;
     std::map<int, double> jumping_force_map;
 public:
-    Character();
-    void reset();
+    Character(int y);
+    void reset(int y);
     // no reason for this to be private
     Animation_Manager animation_manager;
     sf::Sprite& get_sprite();
@@ -28,6 +30,12 @@ public:
     void dec_uposition() { universal_position -= ROLL_STEP; }
     void move_left(); 
     void move_right();
+
+    void set_height(int h)  { height = h; }
+    int  get_height() const { return height; }
+
+    void set_height_finetune(int h)  { height_finetune = h; }
+    int  get_height_finetune() const { return height_finetune; }
 
     // move both static and animation sprites
     void universal_move(float x, float y);

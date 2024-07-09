@@ -12,6 +12,9 @@
 #define PLAYER_POS_X 100
 #define PLAYER_POS_Y 95
 
+#define ENEMY_POS_X  150
+#define ENEMY_POS_Y  95 
+
 #define TILE_SIZE 32
 
 // experimentally found
@@ -22,6 +25,8 @@
 #define PLAYER_X_OFFSET_RIGHT (-8)
 #define PLAYER_X_OFFSET_MIDDLE (-20)
 #define PLAYER_X_OFFSET_LEFT (-10)
+
+#define ENEMY_CYCLE_LIMIT 120
 
 #define JUMP_LIMIT 25
 
