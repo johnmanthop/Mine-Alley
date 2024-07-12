@@ -65,7 +65,7 @@ void Cinematic_Manager::move_enemies_left()
 {
     for (auto &en: enemies)
     {
-        en.move_left();
+        en.move_left(0.5);
     }
 }
 
@@ -73,7 +73,7 @@ void Cinematic_Manager::move_enemies_right()
 {
     for (auto &en: enemies)
     {
-        en.move_right();
+        en.move_right(0.5);
     }
 }
 

@@ -29,16 +29,16 @@ void Character::universal_move(float x, float y)
     animation_manager.move_all_sprites(x, y);
 }
 
-void Character::move_left()
+void Character::move_left(double speed)
 {
-    relative_position -= ROLL_STEP;
-    universal_move(-ROLL_STEP, 0);
+    relative_position -= speed * ROLL_STEP;
+    universal_move(-speed * ROLL_STEP, 0);
 }
 
-void Character::move_right()
+void Character::move_right(double speed)
 {
-    relative_position += ROLL_STEP;
-    universal_move(ROLL_STEP, 0);
+    relative_position += speed * ROLL_STEP;
+    universal_move(speed * ROLL_STEP, 0);
 }
 
 bool Character::is_in_proximity(int p) const

@@ -13,7 +13,7 @@
 #define PLAYER_POS_Y 95
 
 #define ENEMY_POS_X  150
-#define ENEMY_POS_Y  95 
+#define ENEMY_POS_Y  150
 
 #define TILE_SIZE 32
 

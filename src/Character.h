@@ -28,8 +28,8 @@ public:
     sf::Sprite& get_sprite();
     void inc_uposition() { universal_position += ROLL_STEP; }
     void dec_uposition() { universal_position -= ROLL_STEP; }
-    void move_left(); 
-    void move_right();
+    void move_left(double speed = 1.f); 
+    void move_right(double speed = 1.f);
 
     void set_height(int h)  { height = h; }
     int  get_height() const { return height; }
