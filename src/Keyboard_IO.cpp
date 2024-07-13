@@ -25,3 +25,8 @@ bool Keyboard_IO::is_key_pressed_once(sf::Keyboard::Key key)
 
     return result;
 }
+
+void Keyboard_IO::reset_key_press(sf::Keyboard::Key key)
+{
+    was_last_pressed[key] = false;
+}

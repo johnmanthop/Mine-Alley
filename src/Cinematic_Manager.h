@@ -19,8 +19,9 @@ private:
     Platform_Map &platform_map;
     Physics_Engine physics_engine;
 private:
-    void move_enemies_left();
-    void move_enemies_right();
+    void move_enemy_left(int index);
+    void move_enemy_right(int index);
+    int check_attacks();
 public:
     Cinematic_Manager(Character &pl, std::vector<Character> &enemies, Generic_Map &bck, Platform_Map &plt);
     void reset();
@@ -28,6 +29,7 @@ public:
     void tick_gravity();
     void handle_enemies();
     void handle_input();
+    
     bool can_move_right() const;
     bool can_move_left () const;
     TILE get_tile_under_player() const;

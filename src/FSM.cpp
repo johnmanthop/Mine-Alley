@@ -46,15 +46,30 @@ void FSM::construct_default_enemy1_table()
 {
     current_state = "idle_left";
 
-    table["idle_left"]["NOP"] = "idle_left";
-    table["idle_left"]["left"] = "walking_left";
-    table["idle_left"]["right"] = "walking_right";
+    table["idle_left"]["NOP"]       = "idle_left";
+    table["idle_left"]["left"]      = "walking_left";
+    table["idle_left"]["right"]     = "walking_right";
+    table["idle_left"]["hit"]       = "hit_left";
 
-    table["walking_left"]["NOP"] = "idle_left";
-    table["walking_left"]["left"] = "walking_left";
-    table["walking_left"]["right"] = "walking_right";
+    table["walking_left"]["NOP"]    = "idle_left";
+    table["walking_left"]["left"]   = "walking_left";
+    table["walking_left"]["right"]  = "walking_right";
+    table["walking_left"]["hit"]    = "hit_left";
 
-    table["walking_right"]["NOP"] = "idle_left";
-    table["walking_right"]["left"] = "walking_left";
+    table["walking_right"]["NOP"]   = "idle_left";
+    table["walking_right"]["left"]  = "walking_left";
     table["walking_right"]["right"] = "walking_right";
+    table["walking_right"]["hit"]   = "hit_right";
+
+    table["hit_left"]["NOP"]        = "hit_left";
+    table["hit_left"]["left"]       = "hit_left";
+    table["hit_left"]["right"]      = "hit_left";
+    table["hit_left"]["hit"]        = "hit_left";
+    table["hit_left"]["end"]        = "walking_left";
+
+    table["hit_right"]["NOP"]        = "hit_right";
+    table["hit_right"]["left"]       = "hit_right";
+    table["hit_right"]["right"]      = "hit_right";
+    table["hit_right"]["hit"]        = "hit_right";
+    table["hit_right"]["end"]        = "walking_right";
 }

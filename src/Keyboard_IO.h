@@ -11,6 +11,7 @@ private:
 public:
     static bool is_key_pressed     (sf::Keyboard::Key key);
     static bool is_key_pressed_once(sf::Keyboard::Key key);
+    static void reset_key_press    (sf::Keyboard::Key key);
 };
 
 #endif
