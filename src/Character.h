@@ -12,6 +12,7 @@
 class Character
 {
 private:
+    int HP;
     int height;
     int height_finetune;
     double y_position;
@@ -43,6 +44,10 @@ public:
     double get_relative_x() const { return relative_position; }
     double get_absolute_x() const { return universal_position; }
     double get_absolute_y() const { return y_position; }
+
+    int get_HP() const { return HP; }
+    void set_HP(int h) { HP = h; }
+    void add_HP(int h) { HP += h; }
 
     bool can_move_left() const;
     bool can_move_right() const;

@@ -22,6 +22,7 @@ private:
     void move_enemy_left(int index);
     void move_enemy_right(int index);
     int check_attacks();
+    void check_dead_enemies();
 public:
     Cinematic_Manager(Character &pl, std::vector<Character> &enemies, Generic_Map &bck, Platform_Map &plt);
     void reset();

@@ -31,6 +31,7 @@ void Play_Screen::reset(const Screen_Configuration &config)
         enemies[i].animation_manager.add_animation("hit_left", "assets/Mob/Boar/Hit-Vanish/Hit-Sheet.png", 4, 5, ENEMY_POS_X, ENEMY_POS_Y);
         enemies[i].animation_manager.add_animation("hit_right", "assets/Mob/Boar/Hit-Vanish/Hit-Sheet.png", 4, 5, ENEMY_POS_X, ENEMY_POS_Y);
 
+
         enemies[i].animation_manager.animation_mirror("hit_right", true);
         enemies[i].animation_manager.animation_mirror("walking_right", true);
 

@@ -71,10 +71,23 @@ void Cinematic_Manager::move_enemy_right(int index)
     enemies[index].move_right(0.5);
 }
 
+void Cinematic_Manager::check_dead_enemies()
+{
+    for (auto &en: enemies)
+    {
+        if (en.get_HP() < 0)
+        {
+            en.animation_manager.tick("kill");
+        }
+    }
+}
+
 void Cinematic_Manager::handle_enemies()
 {
     std::vector<std::string> inputs(enemies.size());
     int hit_enemy_index = check_attacks();
+
+    check_dead_enemies();
 
     for (auto &in: inputs) in = "NOP";
 
@@ -150,8 +163,11 @@ int Cinematic_Manager::check_attacks()
             bool enemy_left_of_player = player.get_sprite().getPosition().x > en.get_sprite().getPosition().x;
             bool player_facing_left = (anim == "idle_left" || anim == "walking_left" || anim == "attacking_left");
             
-            if (enemy_left_of_player && player_facing_left) return c;
-            else if (!enemy_left_of_player && !player_facing_left) return c;
+            if ((enemy_left_of_player && player_facing_left) || (!enemy_left_of_player && !player_facing_left))
+            {
+                en.add_HP(-10);
+                return c;
+            }
         }
         else 
         {

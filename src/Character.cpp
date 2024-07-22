@@ -10,10 +10,11 @@ Character::Character(int y):
 
 void Character::reset(int y)
 {
-    y_position = y;
-    jump_counter = -1;
-    universal_position = 0;
-    relative_position  = 200;
+    HP                  = 100;
+    y_position          = y;
+    jump_counter        = -1;
+    universal_position  = 0;
+    relative_position   = 200;
 
     animation_manager.clear();
 }
