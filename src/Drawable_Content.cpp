@@ -143,19 +143,19 @@ void Drawable_Animation::tick()
 {
     global_animation_tick_counter++;
 
-    int formet_left = current_sprite.getTextureRect().left;
+    int former_left = current_sprite.getTextureRect().left;
 
     if (local_frame_tick_counter == animation_speed)
     {
         // that means the frame needs to wraparound
-        if (formet_left + frame_width >= spritesheet_width)
+        if (former_left + frame_width >= spritesheet_width)
         {
             current_sprite.setTextureRect({ { 0, 0 }, { frame_width, frame_height } });
             global_animation_tick_counter = 1;
         }
         else 
         {
-            current_sprite.setTextureRect({ { formet_left + frame_width, 0 }, { frame_width, frame_height } });
+            current_sprite.setTextureRect({ { former_left + frame_width, 0 }, { frame_width, frame_height } });
         }
         local_frame_tick_counter = 1;
     }
