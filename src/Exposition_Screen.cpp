@@ -13,7 +13,7 @@ void Exposition_Screen::reset(const Screen_Configuration &config)
     next_screen_s = name_tag;
     action = config.action;
     log.reset(config.layer_files[0]);
-    exposition_text.reset(config.exposition_text, "assets/other/font2.ttf");
+    exposition_text.reset(config.exposition_text, "assets/HUD/font1.ttf");
     exposition_text.get_text().setScale(0.035, 0.035);
     exposition_text.get_text().setPosition(3, 3);
     exposition_text.get_text().setFillColor(sf::Color::Black);

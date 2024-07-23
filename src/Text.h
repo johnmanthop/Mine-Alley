@@ -11,9 +11,9 @@ private:
     sf::Font font;
 public:
     Text() {}
-    Text(const std::string &text, const std::string &font_string = "assets/font1.ttf") { reset(text, font_string); }
+    Text(const std::string &text, const std::string &font_string = "assets/HUD/font1.ttf") { reset(text, font_string); }
 
-    void reset(const std::string &text, const std::string &font_string = "assets/font1.ttf")
+    void reset(const std::string &text, const std::string &font_string = "assets/HUD/font1.ttf")
     {
         font.loadFromFile(font_string);
         ftext.setString(text);

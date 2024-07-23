@@ -27,7 +27,7 @@ private:
     std::string name_tag;
     Screen_Configuration configuration;
 private:
-    Drawable_Static interaction_board;
+    //Drawable_Static interaction_board;
     Platform_Map platform_map;
     Generic_Map background_map;
     Cinematic_Manager cinematic_manager;

@@ -7,9 +7,9 @@
 #include "Constants.h"
 
 Play_Screen::Play_Screen(const Screen_Configuration &config):
-    interaction_board("assets/other/board.png"),
+    //interaction_board("assets/other/board.png"),
     cinematic_manager(player, enemies, background_map, platform_map),
-    player(PLAYER_POS_Y)
+    player(PLAYER_POS_X, PLAYER_POS_Y)
 {
     configuration = config;
     reset(configuration);
@@ -19,17 +19,19 @@ void Play_Screen::reset(const Screen_Configuration &config)
 {
     enemies.clear();
     
-    for (int i = 0; i < 1; ++i)
+    for (int i = 0; i < NO_ENEMIES; ++i)
     {
-        enemies.emplace_back(ENEMY_POS_Y);
-        enemies[i].set_height(1);
-        enemies[i].set_height_finetune(0);
+        int x_pos = ENEMY_POS_X + i * 70;
 
-        enemies[i].animation_manager.add_animation("idle_left", "assets/Mob/Boar/Idle/Idle-Sheet.png", 4, 10, ENEMY_POS_X, ENEMY_POS_Y);
-        enemies[i].animation_manager.add_animation("walking_left", "assets/Mob/Boar/Walk/Walk-Base-Sheet.png", 6, 10, ENEMY_POS_X, ENEMY_POS_Y);
-        enemies[i].animation_manager.add_animation("walking_right", "assets/Mob/Boar/Walk/Walk-Base-Sheet.png", 6, 10, ENEMY_POS_X, ENEMY_POS_Y);
-        enemies[i].animation_manager.add_animation("hit_left", "assets/Mob/Boar/Hit-Vanish/Hit-Sheet.png", 4, 5, ENEMY_POS_X, ENEMY_POS_Y);
-        enemies[i].animation_manager.add_animation("hit_right", "assets/Mob/Boar/Hit-Vanish/Hit-Sheet.png", 4, 5, ENEMY_POS_X, ENEMY_POS_Y);
+        enemies.emplace_back(x_pos, ENEMY_POS_Y);
+        enemies[i].set_height(1);
+        enemies[i].set_height_finetune(0);        
+
+        enemies[i].animation_manager.add_animation("idle_left", "assets/Mob/Boar/Idle/Idle-Sheet.png", 4, 10, x_pos, ENEMY_POS_Y);
+        enemies[i].animation_manager.add_animation("walking_left", "assets/Mob/Boar/Walk/Walk-Base-Sheet.png", 6, 10, x_pos, ENEMY_POS_Y);
+        enemies[i].animation_manager.add_animation("walking_right", "assets/Mob/Boar/Walk/Walk-Base-Sheet.png", 6, 10, x_pos, ENEMY_POS_Y);
+        enemies[i].animation_manager.add_animation("hit_left", "assets/Mob/Boar/Hit-Vanish/Hit-Sheet.png", 4, 5, x_pos, ENEMY_POS_Y);
+        enemies[i].animation_manager.add_animation("hit_right", "assets/Mob/Boar/Hit-Vanish/Hit-Sheet.png", 4, 5, x_pos, ENEMY_POS_Y);
 
 
         enemies[i].animation_manager.animation_mirror("hit_right", true);
@@ -40,7 +42,6 @@ void Play_Screen::reset(const Screen_Configuration &config)
         enemies[i].animation_manager.set_animation_fsm(fsm_en);
     }
 
-    player.reset(PLAYER_POS_Y);
     player.set_height(2);
     player.set_height_finetune(0);
 
@@ -62,8 +63,8 @@ void Play_Screen::reset(const Screen_Configuration &config)
 
     main_view.reset({ 0, 0, MAIN_VIEW_WIDTH, MAIN_VIEW_HEIGHT });
 
-    interaction_board.get_sprite().setScale(0.3, 0.3);
-    interaction_board.get_sprite().setPosition({ 45, 150 });
+    //interaction_board.get_sprite().setScale(0.3, 0.3);
+    //interaction_board.get_sprite().setPosition({ 45, 150 });
 
     background_map.reset(config.layer_files);
     platform_map.reset(config.level_descriptor_file, "assets/Misc/Tiles.png");
@@ -97,9 +98,11 @@ void Play_Screen::handle_drawing(Renderer &renderer)
     for (auto &en: enemies)
     {
         renderer.draw(en.get_sprite());
+        renderer.draw(en.get_hp_bar_sprite());
     }
 
     renderer.draw(player.get_sprite());
+    renderer.draw(player.get_hp_bar_sprite());
     
     renderer.display();
 }

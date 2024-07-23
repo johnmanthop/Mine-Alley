@@ -73,13 +73,23 @@ void Cinematic_Manager::move_enemy_right(int index)
 
 void Cinematic_Manager::check_dead_enemies()
 {
+    int enemy_to_delete = -1;
+    int c = 0;
+
     for (auto &en: enemies)
     {
-        if (en.get_HP() < 0)
+        if (en.get_HP() <= 5)
         {
             en.animation_manager.tick("kill");
+            enemy_to_delete = c;
         }
+        c++;
     }
+
+    if (enemy_to_delete != -1)
+    {
+        enemies.erase(enemies.begin() + enemy_to_delete);
+    }  
 }
 
 void Cinematic_Manager::handle_enemies()

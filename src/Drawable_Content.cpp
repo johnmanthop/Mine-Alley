@@ -12,6 +12,26 @@ Drawable_Static::Drawable_Static(const sf::Texture &tex, const sf::IntRect &rect
     reset(tex, rect, x, y);
 }
 
+Drawable_Static::Drawable_Static(const Drawable_Static &s)
+{
+    texture_file = s.texture_file;
+    texture = s.texture;
+    sprite = s.copy_sprite();
+
+    sprite.setTexture(texture);
+}
+
+Drawable_Static& Drawable_Static::operator=(const Drawable_Static &s)
+{
+    texture_file = s.texture_file;
+    texture = s.texture;
+    sprite = s.copy_sprite();
+
+    sprite.setTexture(texture);
+
+    return *this;
+}
+
 void Drawable_Static::reset(const std::string &file, int x, int y)
 {
     if (!texture.loadFromFile(file))
@@ -35,6 +55,44 @@ void Drawable_Static::reset(const sf::Texture &tex, const sf::IntRect &rect, int
 Drawable_Animation::Drawable_Animation(const std::string &file, int no_of_frames_, int animation_speed_, int x, int y)
 {
     reset(file, no_of_frames_, animation_speed_, x, y);
+}
+
+Drawable_Animation::Drawable_Animation(const Drawable_Animation &a)
+{
+    spritesheet                         = a.spritesheet;
+    current_sprite                      = a.copy_sprite();
+    current_sprite.setTexture(spritesheet);
+
+    no_of_frames                        = a.no_of_frames;
+    animation_speed                     = a.animation_speed;
+    frame_height                        = a.frame_height;
+    frame_width                         = a.frame_width;
+    spritesheet_height                  = a.spritesheet_height;
+    spritesheet_width                   = a.spritesheet_width;
+    rect_left_top                       = a.rect_left_top;
+    local_frame_tick_counter            = a.local_frame_tick_counter;
+    global_animation_tick_counter       = a.global_animation_tick_counter;
+    mirror                              = a.mirror;
+}
+
+Drawable_Animation& Drawable_Animation::operator=(const Drawable_Animation &a)
+{
+    spritesheet                         = a.spritesheet;
+    current_sprite                      = a.copy_sprite();
+    current_sprite.setTexture(spritesheet);
+
+    no_of_frames                        = a.no_of_frames;
+    animation_speed                     = a.animation_speed;
+    frame_height                        = a.frame_height;
+    frame_width                         = a.frame_width;
+    spritesheet_height                  = a.spritesheet_height;
+    spritesheet_width                   = a.spritesheet_width;
+    rect_left_top                       = a.rect_left_top;
+    local_frame_tick_counter            = a.local_frame_tick_counter;
+    global_animation_tick_counter       = a.global_animation_tick_counter;
+    mirror                              = a.mirror;
+
+    return *this;
 }
 
 sf::Sprite& Drawable_Animation::get_sprite() 
