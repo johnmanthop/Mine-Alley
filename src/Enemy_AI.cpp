@@ -43,7 +43,6 @@ int Enemy_AI::find_hit_enemy()
 std::vector<std::string> Enemy_AI::tick()
 {
     int hit_enemy_index = find_hit_enemy();
-    hit_enemy_index = -1;
 
     for (auto &ac: next_actions) ac = "NOP";
 
