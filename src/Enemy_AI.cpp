@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "Enemy_AI.h"
 #include "Keyboard_IO.h"
 
@@ -5,10 +7,12 @@ Enemy_AI::Enemy_AI(Character &pl, std::vector<Character> &en):
     player(pl),
     enemies(en)
 { 
-    cycle_counter = 0;
-    next_actions = std::vector<std::string>(NO_ENEMIES);
+    
+    next_actions = std::vector<std::string> (NO_ENEMIES);
+    counters     = std::vector<int>         (NO_ENEMIES);
 
-    for (auto &action: next_actions) action = "NOP";
+    std::fill(next_actions.begin(), next_actions.end(), "NOP");
+    std::fill(counters.begin(), counters.end(), 0);
 }
 
 int Enemy_AI::find_hit_enemy()
@@ -40,12 +44,29 @@ int Enemy_AI::find_hit_enemy()
     return -1;
 }
 
+bool Enemy_AI::is_player_left_of_enemy(int i) const
+{
+    auto p_x = player.get_sprite().getPosition().x;
+    auto e_x = enemies[i].get_sprite().getPosition().x;
+
+    return abs(p_x - e_x) < 45 && (p_x < e_x);
+}
+
+bool Enemy_AI::is_player_right_of_enemy(int i) const
+{
+    auto p_x = player.get_sprite().getPosition().x;
+    auto e_x = enemies[i].get_sprite().getPosition().x;
+
+    return abs(p_x - e_x) < 30 && (p_x > e_x);
+}
+
 std::vector<std::string> Enemy_AI::tick()
 {
     int hit_enemy_index = find_hit_enemy();
 
-    for (auto &ac: next_actions) ac = "NOP";
+    std::fill(next_actions.begin(), next_actions.end(), "NOP");
 
+    /*
     if (cycle_counter < ENEMY_CYCLE_LIMIT / 2)
     {
         for (int i = 0; i < enemies.size(); ++i)
@@ -81,6 +102,48 @@ std::vector<std::string> Enemy_AI::tick()
     else 
     {
         cycle_counter = 0;
+    }
+    */
+
+    for (int i = 0; i < enemies.size(); ++i)
+    {
+        if (i == hit_enemy_index || enemies[i].animation_manager.get_active_animation().substr(0, 3) == "hit")
+        {
+            next_actions[i] = "hit";
+            continue;
+        }
+        
+        if (counters[i] < ENEMY_CYCLE_LIMIT / 2)
+        {
+            if (!is_player_left_of_enemy(i)) 
+            {
+                counters[i]++;
+                next_actions[i] = "left";
+            }
+            else 
+            {
+                counters[i] = ENEMY_CYCLE_LIMIT / 2;
+                next_actions[i] = "right";
+            }
+           
+        }
+        else if (counters[i] < ENEMY_CYCLE_LIMIT)
+        {
+            if (!is_player_right_of_enemy(i)) 
+            {
+                counters[i]++;
+                next_actions[i] = "right";
+            }
+            else 
+            {
+                counters[i] = ENEMY_CYCLE_LIMIT;
+                next_actions[i] = "left";
+            }
+        }
+        else
+        {
+            counters[i] = 0;
+        }
     }
 
     return next_actions;

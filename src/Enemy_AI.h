@@ -9,11 +9,13 @@
 class Enemy_AI
 {
 private:
-    Character &player;
-    std::vector<Character> &enemies;
-    std::vector<std::string> next_actions;
+    Character                   &player;
+    std::vector<Character>      &enemies;
+    std::vector<std::string>    next_actions;
+    std::vector<int>            counters;
 private:
-    int cycle_counter;
+    bool is_player_left_of_enemy (int index) const;
+    bool is_player_right_of_enemy(int index) const;
 public:
     Enemy_AI(Character &pl, std::vector<Character> &enemies);
 
