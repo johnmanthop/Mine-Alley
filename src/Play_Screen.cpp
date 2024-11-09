@@ -9,6 +9,7 @@
 Play_Screen::Play_Screen(const Screen_Configuration &config):
     //interaction_board("assets/other/board.png"),
     cinematic_manager(player, enemies, background_map, platform_map),
+    enemy_ai_manager(player, enemies),
     player(PLAYER_POS_X, PLAYER_POS_Y)
 {
     configuration = config;
@@ -21,7 +22,7 @@ void Play_Screen::reset(const Screen_Configuration &config)
     
     for (int i = 0; i < NO_ENEMIES; ++i)
     {
-        int x_pos = ENEMY_POS_X + i * 70;
+        int x_pos = 2 * ENEMY_POS_X + i * 70;
 
         enemies.emplace_back(x_pos, ENEMY_POS_Y);
         enemies[i].set_height(1);
@@ -109,7 +110,8 @@ void Play_Screen::handle_drawing(Renderer &renderer)
 
 void Play_Screen::handle_enemies()
 {
-    cinematic_manager.handle_enemies();
+    auto action_list = enemy_ai_manager.tick();
+    cinematic_manager.handle_enemies(action_list);
 }
 
 void Play_Screen::handle_input()
@@ -151,6 +153,7 @@ std::string Play_Screen::next_screen()
 
 void Play_Screen::handle_triggers()
 {
+    /*
     trigger_on = false;
     for (auto &trigger: triggers)
     {
@@ -164,17 +167,17 @@ void Play_Screen::handle_triggers()
             }
         }
     }
+    */
 }
 
 void Play_Screen::handle_frame(Renderer &renderer)
 {
-    if (!player_dying && !player_dead && !player_won)
-    {
-        handle_input();
-        handle_enemies();
-        handle_triggers();
-        cinematic_manager.tick_gravity();
-    }
+
+    handle_input();
+    handle_enemies();
+    handle_triggers();
+    cinematic_manager.tick_gravity();
+
     
 
     std::vector<sf::Event> event_list = renderer.get_event_list();

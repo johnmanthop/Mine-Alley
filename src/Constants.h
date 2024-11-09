@@ -30,7 +30,7 @@
 
 #define JUMP_LIMIT 25
 
-#define NO_ENEMIES 3
+#define NO_ENEMIES 2
 
 enum TILE { VOID, CONCRETE_BLOCK, MINE_BLOCK, FINISH_BLOCK };
 

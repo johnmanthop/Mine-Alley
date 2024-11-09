@@ -21,14 +21,13 @@ private:
 private:
     void move_enemy_left(int index);
     void move_enemy_right(int index);
-    int check_attacks();
-    void check_dead_enemies();
+    void erase_dead_enemies();
 public:
     Cinematic_Manager(Character &pl, std::vector<Character> &enemies, Generic_Map &bck, Platform_Map &plt);
     void reset();
 
     void tick_gravity();
-    void handle_enemies();
+    void handle_enemies(const std::vector<std::string> &action_list);
     void handle_input();
     
     bool can_move_right() const;

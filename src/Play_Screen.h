@@ -13,15 +13,11 @@
 #include "Screen.h"
 #include "Renderer.h"
 #include "Trigger.h"
+#include "Enemy_AI.h"
 
 class Play_Screen : public Screen
 {
 private:
-    bool player_dying;
-    bool player_dead;
-    bool player_won;
-    bool trigger_on;
-    Trigger active_trigger;
     std::vector<Trigger> triggers;
     std::string next_screen_s;
     std::string name_tag;
@@ -31,6 +27,7 @@ private:
     Platform_Map platform_map;
     Generic_Map background_map;
     Cinematic_Manager cinematic_manager;
+    Enemy_AI enemy_ai_manager;
     Character player;
     std::vector<Character> enemies;
 private:

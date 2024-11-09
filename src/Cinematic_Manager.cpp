@@ -71,7 +71,7 @@ void Cinematic_Manager::move_enemy_right(int index)
     enemies[index].move_right(0.5);
 }
 
-void Cinematic_Manager::check_dead_enemies()
+void Cinematic_Manager::erase_dead_enemies()
 {
     int enemy_to_delete = -1;
     int c = 0;
@@ -92,57 +92,22 @@ void Cinematic_Manager::check_dead_enemies()
     }  
 }
 
-void Cinematic_Manager::handle_enemies()
+void Cinematic_Manager::handle_enemies(const std::vector<std::string> &action_list)
 {
-    std::vector<std::string> inputs(enemies.size());
-    int hit_enemy_index = check_attacks();
-
-    check_dead_enemies();
-
-    for (auto &in: inputs) in = "NOP";
-
-    if (enemy_cycle < ENEMY_CYCLE_LIMIT / 2)
-    {
-        for (int i = 0; i < enemies.size(); ++i)
-        {
-            if (hit_enemy_index != i && enemies[i].animation_manager.get_active_animation() != "hit_right")
-            {
-                inputs[i] = "right";
-                move_enemy_right(i);
-            }
-            else
-            {
-                inputs[i] = "hit";
-            }
-        }
-
-        enemy_cycle++;
-    }
-    else if (enemy_cycle < ENEMY_CYCLE_LIMIT)
-    {
-        for (int i = 0; i < enemies.size(); ++i)
-        {
-            if (hit_enemy_index != i && enemies[i].animation_manager.get_active_animation() != "hit_left")
-            {
-                inputs[i] = "left";
-                move_enemy_left(i);
-            }
-            else
-            {
-                inputs[i] = "hit";
-            }
-        }
-
-        enemy_cycle++;
-    }
-    else 
-    {
-        enemy_cycle = 0;
-    }
+    erase_dead_enemies();
 
     for (int i = 0; i < enemies.size(); ++i)
     {
-        enemies[i].animation_manager.tick(inputs[i]);
+        if (action_list[i] == "right")
+        {
+            enemies[i].move_right(0.5f);
+        }
+        else if (action_list[i] == "left")
+        {
+            enemies[i].move_left(0.5f);
+        }
+
+        enemies[i].animation_manager.tick(action_list[i]);
     }
 }
 
@@ -157,35 +122,6 @@ TILE Cinematic_Manager::get_tile_under_player() const
     int normalized_y = (y / TILE_SIZE) + 2;
 
     return platform_map.get_tile(normalized_x, normalized_y);
-}
-
-int Cinematic_Manager::check_attacks()
-{
-    int c = 0;
-
-    std::string anim = player.animation_manager.get_active_animation();
-
-    for (auto &en: enemies)
-    {
-        auto p = en.get_sprite().getPosition();
-        if (player.get_sprite().getGlobalBounds().contains(p.x + 16, p.y) && Keyboard_IO::is_key_pressed_once(sf::Keyboard::Space))
-        {
-            bool enemy_left_of_player = player.get_sprite().getPosition().x > en.get_sprite().getPosition().x;
-            bool player_facing_left = (anim == "idle_left" || anim == "walking_left" || anim == "attacking_left");
-            
-            if ((enemy_left_of_player && player_facing_left) || (!enemy_left_of_player && !player_facing_left))
-            {
-                en.add_HP(-10);
-                return c;
-            }
-        }
-        else 
-        {
-            c++;
-        }
-    }
-
-    return -1;
 }
 
 void Cinematic_Manager::handle_input()
@@ -214,6 +150,7 @@ void Cinematic_Manager::handle_input()
         Keyboard_IO::is_key_pressed(sf::Keyboard::A) &&
         player.animation_manager.get_active_animation() != "attacking_left" && 
         player.animation_manager.get_active_animation() != "attacking_right"
+    
     )
     {
         if (can_move_left())
