@@ -11,7 +11,7 @@ Enemy_AI::Enemy_AI(Character &pl, std::vector<Character> &en):
     std::fill(cycle_counters.begin(), cycle_counters.end(), 0);
 }
 
-int Enemy_AI::find_hit_enemy()
+int Enemy_AI::find_hit_enemy() const
 {
     int c = 0;
 

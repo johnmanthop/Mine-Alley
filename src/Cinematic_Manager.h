@@ -11,9 +11,13 @@
 class Cinematic_Manager
 {
 private:
-    int enemy_cycle;
+    // the following two are populated in handle_enemy_interactions and handle_input
+    // advance() reads the results in them and decides what should the next action be
+    std::vector<std::pair<std::string, int>> enemy_interaction_vector;
+    std::string last_player_input;
+    bool jump_triggered;
 private:
-    Character &player;
+    Character &player; 
     std::vector<Character> &enemies;
     Generic_Map &background_map;
     Platform_Map &platform_map;
@@ -36,6 +40,8 @@ public:
 
     void move_player_or_map_right();
     void move_player_or_map_left();
+
+    void advance();
 };
 
 #endif

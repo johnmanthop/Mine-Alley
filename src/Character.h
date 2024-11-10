@@ -54,16 +54,16 @@ public:
     void set_HP(int h) { HP = h; }
     void add_HP(int h);
 
-    bool can_move_left() const;
-    bool can_move_right() const;
-    bool is_at_center() const { return abs(relative_position - center_position) <= 2; }
+    bool can_move_left()      const;
+    bool can_move_right()     const;
+    bool is_at_center()       const { return abs(relative_position - center_position) <= 2; }
 
-    void trigger_jump() { jump_counter = 0; }
-    void trigger_freefall() { jump_counter = JUMP_LIMIT; }
-    int get_jump_counter() const { return jump_counter; }
-    int get_jumping_state() const;
-    void reset_jump()   { jump_counter = -1; }
-    bool is_jumping() const { return jump_counter != -1; }
+    void trigger_jump()             { jump_counter = 0; }
+    void trigger_freefall()         { jump_counter = JUMP_LIMIT; }
+    int get_jump_counter()    const { return jump_counter; }
+    int get_jumping_state()   const;
+    void reset_jump()               { jump_counter = -1; }
+    bool is_jumping()         const { return jump_counter != -1; }
     void tick_jump();
 
     bool is_in_proximity(int p) const;

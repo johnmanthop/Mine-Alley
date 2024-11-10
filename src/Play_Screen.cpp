@@ -46,16 +46,23 @@ void Play_Screen::reset(const Screen_Configuration &config)
     player.set_height(2);
     player.set_height_finetune(0);
 
-    player.animation_manager.add_animation("idle_right", "assets/Character/Idle/Idle-Sheet.png", 4, 10, PLAYER_POS_X, PLAYER_POS_Y);
-    player.animation_manager.add_animation("idle_left", "assets/Character/Idle/Idle-Sheet.png", 4, 10, PLAYER_POS_X, PLAYER_POS_Y);
+    player.animation_manager.add_animation("idle_right", "assets/Character/Idle/Idle-Sheet.png", 4, 15, PLAYER_POS_X, PLAYER_POS_Y);
+    player.animation_manager.add_animation("idle_left", "assets/Character/Idle/Idle-Sheet.png", 4, 15, PLAYER_POS_X, PLAYER_POS_Y);
     player.animation_manager.add_animation("walking_right", "assets/Character/Run/Run-Sheet.png", 8, 8, PLAYER_POS_X, PLAYER_POS_Y);
     player.animation_manager.add_animation("walking_left", "assets/Character/Run/Run-Sheet.png", 8, 8, PLAYER_POS_X, 95);
     player.animation_manager.add_animation("attacking_right", "assets/Character/Attack-01/Attack-01-Sheet.png", 8, 2, PLAYER_POS_X, PLAYER_POS_Y);
     player.animation_manager.add_animation("attacking_left", "assets/Character/Attack-01/Attack-01-Sheet.png", 8, 2, PLAYER_POS_X, PLAYER_POS_Y);
-    
+    player.animation_manager.add_animation("dash_right", "assets/Character/Jump-End/Jump-End-Sheet.png", 3, 4, PLAYER_POS_X, PLAYER_POS_Y);
+    player.animation_manager.add_animation("dash_left", "assets/Character/Jump-End/Jump-End-Sheet.png", 3, 4, PLAYER_POS_X, PLAYER_POS_Y);
+    player.animation_manager.add_animation("jump_right", "assets/Character/Jump-All/Jump-All-Sheet.png", 15, 4, PLAYER_POS_X, PLAYER_POS_Y);
+    player.animation_manager.add_animation("jump_left", "assets/Character/Jump-All/Jump-All-Sheet.png", 15, 4, PLAYER_POS_X, PLAYER_POS_Y);
+
+
     player.animation_manager.animation_mirror("idle_left", true);
     player.animation_manager.animation_mirror("walking_left", true);
     player.animation_manager.animation_mirror("attacking_left", true);
+    player.animation_manager.animation_mirror("dash_left", true);
+    player.animation_manager.animation_mirror("jump_left", true);
 
     FSM fsm;
     fsm.construct_default_character_table();
@@ -171,13 +178,11 @@ void Play_Screen::handle_triggers()
 
 void Play_Screen::handle_frame(Renderer &renderer)
 {
-
     handle_input();
     handle_enemy_interactions();
     handle_triggers();
-    cinematic_manager.tick_gravity();
 
-    
+    cinematic_manager.advance();
 
     std::vector<sf::Event> event_list = renderer.get_event_list();
 

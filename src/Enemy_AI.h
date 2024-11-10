@@ -18,7 +18,7 @@ private:
 public:
     Enemy_AI(Character &pl, std::vector<Character> &enemies);
 
-    int find_hit_enemy();
+    int find_hit_enemy() const;
     std::vector<std::pair<std::string, int>> tick();
 };
 

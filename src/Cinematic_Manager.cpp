@@ -10,7 +10,6 @@ Cinematic_Manager::Cinematic_Manager(Character &pl, std::vector<Character> &en, 
 
 void Cinematic_Manager::reset()
 {
-    enemy_cycle = 0;
     physics_engine.reset(platform_map);
 }
 
@@ -95,31 +94,7 @@ void Cinematic_Manager::erase_dead_enemies()
 void Cinematic_Manager::handle_enemy_interactions(const std::vector<std::pair<std::string, int>> &interaction_vector)
 {
     erase_dead_enemies();
-
-    for (int i = 0; i < enemies.size(); ++i)
-    {
-        if (interaction_vector[i].first == "right")
-        {
-            enemies[i].move_right(0.5f);
-        }
-        else if (interaction_vector[i].first == "left")
-        {
-            enemies[i].move_left(0.5f);
-        }
-
-        if (interaction_vector[i].second == 1)
-        {
-            player.move_left(10);
-            player.dec_uposition(10);
-        }
-        else if (interaction_vector[i].second == 2)
-        {
-            player.move_right(10);
-            player.inc_uposition(10);
-        }
-
-        enemies[i].animation_manager.tick(interaction_vector[i].first);
-    }
+    enemy_interaction_vector = interaction_vector;
 }
 
 TILE Cinematic_Manager::get_tile_under_player() const 
@@ -137,12 +112,12 @@ TILE Cinematic_Manager::get_tile_under_player() const
 
 void Cinematic_Manager::handle_input()
 {
-    std::string input = "NOP";
+    last_player_input = "NOP";
 
     if (Keyboard_IO::is_key_pressed_once(sf::Keyboard::Space))
     {
         Keyboard_IO::reset_key_press(sf::Keyboard::Space);
-        input = "attack";
+        last_player_input = "attack";
     }
     else if (
         Keyboard_IO::is_key_pressed(sf::Keyboard::D) &&
@@ -152,8 +127,7 @@ void Cinematic_Manager::handle_input()
     {
         if (can_move_right())
         {
-            move_player_or_map_right();
-            input = "D";
+            last_player_input = "D";
         }
 
     }
@@ -166,18 +140,19 @@ void Cinematic_Manager::handle_input()
     {
         if (can_move_left())
         {
-            move_player_or_map_left();
-            input = "A";
+            last_player_input = "A";
         }
     }
 
 
     if (Keyboard_IO::is_key_pressed(sf::Keyboard::W) && !player.is_jumping())
     {
-        player.trigger_jump();
+        jump_triggered = true;
     }
-
-    player.animation_manager.tick(input);
+    else 
+    {
+        jump_triggered = false;
+    }
 }
 
 /*
@@ -192,4 +167,64 @@ void Cinematic_Manager::tick_gravity()
     }
 
     physics_engine.tick_gravity(player);
+}
+
+
+void Cinematic_Manager::advance()
+{
+    bool dash_left = false;
+    bool dash_right = false;
+
+    tick_gravity();
+
+    for (int i = 0; i < enemies.size(); ++i)
+    {
+        if (enemy_interaction_vector[i].first == "right")
+        {
+            enemies[i].move_right(0.5f);
+        }
+        else if (enemy_interaction_vector[i].first == "left")
+        {
+            enemies[i].move_left(0.5f);
+        }
+
+        if (enemy_interaction_vector[i].second == 1)
+        {
+            dash_left = true;
+        }
+        else if (enemy_interaction_vector[i].second == 2)
+        {
+            dash_right = true;
+        }
+
+        enemies[i].animation_manager.tick(enemy_interaction_vector[i].first);
+    }
+
+    if (jump_triggered)
+    {
+        player.trigger_jump();
+        last_player_input = "jump";
+    }
+    else if (dash_left)
+    {
+        last_player_input = "collide";
+        player.move_left(10);
+        player.dec_uposition(10);
+    }
+    else if (dash_right)
+    {
+        last_player_input = "collide";
+        player.move_right(10);
+        player.inc_uposition(10);
+    }
+    else if (last_player_input == "D")
+    {
+        move_player_or_map_right();
+    }
+    else if (last_player_input == "A")
+    {
+        move_player_or_map_left();
+    }
+    
+    player.animation_manager.tick(last_player_input);
 }
