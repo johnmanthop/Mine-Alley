@@ -7,12 +7,8 @@ Enemy_AI::Enemy_AI(Character &pl, std::vector<Character> &en):
     player(pl),
     enemies(en)
 { 
-    
-    next_actions = std::vector<std::string> (NO_ENEMIES);
-    counters     = std::vector<int>         (NO_ENEMIES);
-
-    std::fill(next_actions.begin(), next_actions.end(), "NOP");
-    std::fill(counters.begin(), counters.end(), 0);
+    cycle_counters = std::vector<int>         (NO_ENEMIES);
+    std::fill(cycle_counters.begin(), cycle_counters.end(), 0);
 }
 
 int Enemy_AI::find_hit_enemy()
@@ -60,91 +56,61 @@ bool Enemy_AI::is_player_right_of_enemy(int i) const
     return abs(p_x - e_x) < 30 && (p_x > e_x);
 }
 
-std::vector<std::string> Enemy_AI::tick()
+/*
+ * Return type is a vector of strings and ints
+ * The string is the next action of the corresponding enemy
+ * The int is a flag signifying weather a collision has happened between this enemy and the player and to which direction
+ */
+std::vector<std::pair<std::string, int>> Enemy_AI::tick()
 {
+    std::vector<std::pair<std::string, int>> return_v(NO_ENEMIES);
+    std::fill(return_v.begin(), return_v.end(), std::make_pair<std::string, int>("NOP", 0));
+
     int hit_enemy_index = find_hit_enemy();
 
-    std::fill(next_actions.begin(), next_actions.end(), "NOP");
-
-    /*
-    if (cycle_counter < ENEMY_CYCLE_LIMIT / 2)
-    {
-        for (int i = 0; i < enemies.size(); ++i)
-        {
-            if (hit_enemy_index != i && enemies[i].animation_manager.get_active_animation() != "hit_right")
-            {
-                next_actions[i] = "right";
-            }
-            else
-            {
-                next_actions[i] = "hit";
-            }
-        }
-
-        cycle_counter++;
-    }
-    else if (cycle_counter < ENEMY_CYCLE_LIMIT)
-    {
-        for (int i = 0; i < enemies.size(); ++i)
-        {
-            if (hit_enemy_index != i && enemies[i].animation_manager.get_active_animation() != "hit_left")
-            {
-                next_actions[i] = "left";
-            }
-            else
-            {
-                next_actions[i] = "hit";
-            }
-        }
-
-        cycle_counter++;
-    }
-    else 
-    {
-        cycle_counter = 0;
-    }
-    */
 
     for (int i = 0; i < enemies.size(); ++i)
     {
         if (i == hit_enemy_index || enemies[i].animation_manager.get_active_animation().substr(0, 3) == "hit")
         {
-            next_actions[i] = "hit";
+            return_v[i].first = "hit";
             continue;
         }
         
-        if (counters[i] < ENEMY_CYCLE_LIMIT / 2)
+        if (cycle_counters[i] < ENEMY_CYCLE_LIMIT / 2)
         {
             if (!is_player_left_of_enemy(i)) 
             {
-                counters[i]++;
-                next_actions[i] = "left";
+                cycle_counters[i]++;
+                return_v[i].first = "left";
             }
             else 
             {
-                counters[i] = ENEMY_CYCLE_LIMIT / 2;
-                next_actions[i] = "right";
+                cycle_counters[i] = ENEMY_CYCLE_LIMIT / 2;
+                return_v[i].first = "right";
+                return_v[i].second = 1;
             }
            
         }
-        else if (counters[i] < ENEMY_CYCLE_LIMIT)
+        else if (cycle_counters[i] < ENEMY_CYCLE_LIMIT)
         {
             if (!is_player_right_of_enemy(i)) 
             {
-                counters[i]++;
-                next_actions[i] = "right";
+                cycle_counters[i]++;
+                return_v[i].first = "right";
             }
             else 
             {
-                counters[i] = ENEMY_CYCLE_LIMIT;
-                next_actions[i] = "left";
+                cycle_counters[i] = ENEMY_CYCLE_LIMIT;
+                return_v[i].first = "left";
+                return_v[i].second = 2;
             }
         }
         else
         {
-            counters[i] = 0;
+            cycle_counters[i] = 0;
         }
     }
 
-    return next_actions;
+    return return_v;
 }

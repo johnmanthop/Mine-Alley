@@ -32,8 +32,8 @@ public:
     sf::Sprite& get_sprite();
     sf::RectangleShape& get_hp_bar_sprite() { return hp_bar; }
     
-    void inc_uposition() { universal_position += ROLL_STEP; }
-    void dec_uposition() { universal_position -= ROLL_STEP; }
+    void inc_uposition(double speed = 1.0f) { universal_position += ROLL_STEP * speed; }
+    void dec_uposition(double speed = 1.0f) { universal_position -= ROLL_STEP * speed; }
     void move_left(double speed = 1.f); 
     void move_right(double speed = 1.f);
 

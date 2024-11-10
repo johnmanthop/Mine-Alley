@@ -27,7 +27,7 @@ public:
     void reset();
 
     void tick_gravity();
-    void handle_enemies(const std::vector<std::string> &action_list);
+    void handle_enemy_interactions(const std::vector<std::pair<std::string, int>> &interaction_vector);
     void handle_input();
     
     bool can_move_right() const;

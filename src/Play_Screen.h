@@ -33,7 +33,7 @@ private:
 private:
     void handle_drawing(Renderer &renderer);
     void handle_input();
-    void handle_enemies();
+    void handle_enemy_interactions();
     void handle_triggers();
     void handle_action(const std::string &action);
     void reset(const Screen_Configuration &config);

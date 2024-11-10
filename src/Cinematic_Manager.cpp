@@ -92,22 +92,33 @@ void Cinematic_Manager::erase_dead_enemies()
     }  
 }
 
-void Cinematic_Manager::handle_enemies(const std::vector<std::string> &action_list)
+void Cinematic_Manager::handle_enemy_interactions(const std::vector<std::pair<std::string, int>> &interaction_vector)
 {
     erase_dead_enemies();
 
     for (int i = 0; i < enemies.size(); ++i)
     {
-        if (action_list[i] == "right")
+        if (interaction_vector[i].first == "right")
         {
             enemies[i].move_right(0.5f);
         }
-        else if (action_list[i] == "left")
+        else if (interaction_vector[i].first == "left")
         {
             enemies[i].move_left(0.5f);
         }
 
-        enemies[i].animation_manager.tick(action_list[i]);
+        if (interaction_vector[i].second == 1)
+        {
+            player.move_left(10);
+            player.dec_uposition(10);
+        }
+        else if (interaction_vector[i].second == 2)
+        {
+            player.move_right(10);
+            player.inc_uposition(10);
+        }
+
+        enemies[i].animation_manager.tick(interaction_vector[i].first);
     }
 }
 
@@ -169,6 +180,10 @@ void Cinematic_Manager::handle_input()
     player.animation_manager.tick(input);
 }
 
+/*
+ * TODO: make physics engine return an information structure 
+ *       that cinematic manager will use to move the player instead of the physics engine moving the player directly
+ */
 void Cinematic_Manager::tick_gravity()
 {
     for (auto &en: enemies)

@@ -108,10 +108,9 @@ void Play_Screen::handle_drawing(Renderer &renderer)
     renderer.display();
 }
 
-void Play_Screen::handle_enemies()
+void Play_Screen::handle_enemy_interactions()
 {
-    auto action_list = enemy_ai_manager.tick();
-    cinematic_manager.handle_enemies(action_list);
+    cinematic_manager.handle_enemy_interactions(enemy_ai_manager.tick());
 }
 
 void Play_Screen::handle_input()
@@ -174,7 +173,7 @@ void Play_Screen::handle_frame(Renderer &renderer)
 {
 
     handle_input();
-    handle_enemies();
+    handle_enemy_interactions();
     handle_triggers();
     cinematic_manager.tick_gravity();
 
