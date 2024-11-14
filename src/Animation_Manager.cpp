@@ -9,17 +9,18 @@ void Animation_Manager::add_animation(const std::string &tag, const std::string 
 
 void Animation_Manager::tick(const std::string &input)
 {
+    // In some cases, for example after a player jump or dash (timed animations)
+    // The animation can return either to idle or walk
+    // The animation needs to return to the animation that was active before the jump or dash was triggered
+
     if (animation_fsm.timed() && animations[current_animation_tag].has_yielded())
     {
         animation_fsm.advance("end");
     }
-    else
-    {
-        animation_fsm.advance(input);
-    }
-
+    
+    
+    animation_fsm.advance(input);
     current_animation_tag = animation_fsm.state();
-
     animations[current_animation_tag].tick();
 }
 

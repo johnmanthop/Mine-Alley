@@ -18,6 +18,7 @@ public:
     std::string state() const { return current_state; }
     void advance(const std::string &action) { current_state = table[current_state][action]; }
     bool timed() const;
+    bool timed(const std::string &tag) const;
     void construct_default_character_table();
     void construct_default_enemy1_table();
 };

@@ -5,6 +5,12 @@ bool FSM::timed() const
     return table.at(current_state).count("end");
 }
 
+bool FSM::timed(const std::string &input) const
+{
+    // uses string as input
+    return table.at(table.at(current_state).at(input)).count("end");
+}
+
 void FSM::construct_default_character_table()
 {
     current_state = "idle_right";

@@ -200,10 +200,11 @@ void Cinematic_Manager::advance()
         enemies[i].animation_manager.tick(enemy_interaction_vector[i].first);
     }
 
+    // jump triggered comes from handle_input
     if (jump_triggered)
     {
-        player.trigger_jump();
         last_player_input = "jump";
+        player.trigger_jump();
     }
     else if (dash_left)
     {
